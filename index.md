@@ -21,4 +21,8 @@ TBD: Signing up for groups coming soon.
 <a name="projects"></a>Project Submissions
 ------------------------------------------
 
-Folders for project submissions will appear here. Eventually.
+[--------Project Submission Requirements---------](./submissions.html)
+
+The link above summarizes how to submit your project. Please read those instructions very carefully.
+
+[00 - Coin Change (Example)](./projects/00-coinChange/index.html)
