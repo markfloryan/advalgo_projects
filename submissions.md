@@ -41,7 +41,8 @@ Note the **index.md** file in your root directory. This file will be preplaced i
 				- sample.in.3
 				- sample.out.3
 		- slides/
-			- coinChange.pptx
+			- lecture_coinChange.pptx (this is the longer lecture slides)
+			- presentation_coinChange.pptx (this is the 10 min pres. version)
 		- programmingChallenge/
 			- problemStatement.pdf
 			- io/

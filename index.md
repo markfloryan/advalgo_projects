@@ -16,7 +16,11 @@ The link above describes all of the requirements for the project. Please let cou
 <a name="groupsign"></a>Signing Up for Groups
 ------------------------------------------
 
-TBD: Signing up for groups coming soon.
+[--------Group Sign-Up Sheet---------](https://docs.google.com/spreadsheets/d/1rvVcqP0n2Cm0UkgVLKYx8QPkR5YsjTTjrblXMOLnmrg/edit?usp=sharing)
+
+You can sign-up for a group / algorithm on the sheet above. 
+
+
 
 <a name="projects"></a>Project Submissions
 ------------------------------------------
