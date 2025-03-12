@@ -41,7 +41,7 @@ There is no strict page minimum or maximum for this document. When writing your 
 
 You will **create / provide a working implementation that showcases your topic** in three different programming languages (C++, Java, Python). If your topic is a **general algorithmic approach**, then you will need to choose a simple, straightforward example of applying that approach. Make sure to describe in your executive summary what the problem statement for this example is.
 
-In addition to providing working solutions in all three programming languages, you will write a couple of simple, small sample test cases that we can easily run on your code to verify that it works on small examples.
+In addition to providing working solutions in all three programming languages, you will **write a couple of simple, small sample test cases** that we can easily run on your code to verify that it works on small examples. You should have **at least three test cases**
 
 Lastly, to showcase your understanding of the code / algorithm, and to assist other students who read your code, you will comment the code (in all three languages) extensively. You should have a detailed comment for each block of 3-5 lines of code. Every comment should meaningfully interpret your code intuitively, not simply translate exactly what the code states. For example, don't say things like "sets x to 5 times the value of y", say things like "multiply x by 5 to calculate the maximum value the solution could possibly be".
 

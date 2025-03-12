@@ -3,7 +3,6 @@ Final Project: Advanced Algorithms and Implementation
 
 [Project Requirements](#requirements) | [Group Signup](#groupsign) | [Project Submissions](#projects)
 
-**THIS PAGE IS STILL UNDER DEVELOPMENT. EXPECT MAJOR CHANGES**
 
 <a name="requirements"></a>Project Requirements
 ---------------------------------------
@@ -30,3 +29,11 @@ You can sign-up for a group / algorithm on the sheet above.
 The link above summarizes how to submit your project. Please read those instructions very carefully.
 
 [00 - Coin Change (Example)](./projects/00-coinChange/index.html)
+
+
+<a name="projects"></a>Grading Rubric
+------------------------------------------
+
+[--------Grading Rubric Is Here---------](./rubric.html)
+
+The link above will take you to the grading rubric for this project. 
