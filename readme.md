@@ -1,6 +1,8 @@
 Final Project: Advanced Algorithms and Implementation
 ===============================
 
+**[Go back to course website](https://markfloryan.github.io/advAlgo)**
+
 [Project Requirements](#requirements) | [Group Signup](#groupsign) | [Project Submissions](#projects)
 
 
