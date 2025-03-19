@@ -12,7 +12,7 @@ This page contains the project requirements. Please make sure you read this page
 
 To complete this project, you will produce multiple deliverables. You will push each of these deliverables to this Github Repository. The deliverables are:
 
-1. **Executive Summary**: 2-5 page description of everything that has been delivered in this packet / project. 
+1. **Executive Summary**: 4-8 page description of everything that has been delivered in this packet / project. 
 2. **Implementation**: In C++, Java, and Python. The code needs to be thoroughly commented. 
 3. **Instructional Slides**: Two sets of instructional slides. The first, a thorough, well designed, informative slideset that briefly teach the topic to an advanced undergraduate audience (about one lecture or 10-15 slides in length). A second, shorter, set of slides will be submitted that will be used for your 10 minute presentation.
 4. **PC: Custom Programming Challenge**: A programming assignment that asks students to use the algorithm in question, but with at least one notable twist / change to the topic / algorithm in question.
