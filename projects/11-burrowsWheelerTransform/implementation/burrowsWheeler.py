@@ -86,7 +86,7 @@ def firstCol(tots):
         # Sets first[c] to totc, which is the index the current character c should first appear at
         first[c] = totc
         # Adds count to totc, which indicates that the next character should appear after all
-        #   instances of the current character, which would span (totc, totc + (count - 1))
+        #   instances of the current character, which would span [totc, totc + (count - 1)]
         totc += count
     return first
 
@@ -113,7 +113,7 @@ def reverseBwt(bw):
     t = '$'
     """
     * BWT reversal relies on the fact that the last characters of the sorted strings are the BWT characters
-    * Thus, indexing into the BWT at rowi indicates the character at the end of the string starting with '$'
+    * Thus, indexing into the BWT at 0 indicates the character at the end of the string starting with '$'
     * This character is also the end of the original string, since it is cyclically before '$'
     * Thus, for each current character, the corresponding BWT character is the previous character in the string
     * The string is built up by prepending each previous character until the cycle ends by reaching
@@ -124,7 +124,7 @@ def reverseBwt(bw):
         c = bw[rowi]
         # prepends c before the output string t, as c must come before the starting character of the sorted rotation
         t = c + t
-        # rowi is set to the location of the c in the sorted rotations
+        # rowi is set to the location of c in the sorted rotations
         # first[c] indicates the first location at which c prefixes the sorted rotations
         # ranks[rowi] indicates how many instances of c have prefixed previous sorted rotations
         rowi = first[c] + ranks[rowi]
