@@ -33,15 +33,15 @@ public class burrowsWheeler {
     }
     /*
      * Takes in input string t
-     * Returns list of cyclical rotations of original string (including $) of length n
-     * Done by doubling original string and getting each set of consecutive n characters
+     * Returns list of cyclical rotations of original string (including $) of length strLen
+     * Done by doubling original string and getting each set of consecutive strLen characters
      */
     public String[] rotations(String t){
         // double original string
         String tt = t + t;
         int strLen = t.length();
         String[] rotations = new String[strLen];
-        // add each rotation to array, derived by getting consecutive set of n characters starting
+        // add each rotation to array, derived by getting consecutive set of strLen characters starting
         //  with the start of the string and continuing until the last character of the initial string
         for(int i = 0; i < strLen; i++){
             rotations[i] = tt.substring(i, i+strLen);
@@ -64,9 +64,8 @@ public class burrowsWheeler {
     /*
      * Takes in input string t
      * Returns the Burrows-Wheeler transform (BWT) by utilizing the sorted rotations
-     * Through a loop through the sorted rotations, the last character is added to the the lambda function and 'map', each rotation (x) is mapped to its last character (x[-1])
-     *  through taking in the iterable array of sorted rotations and utilizing a map from x to x[-1]
-     * The list of last characters is all concatenated in order into a string through the 'join' function
+     * Through a loop through the sorted rotations, the last character of each rotation is added
+     * The resulting concatenation of all the last characters is returned
      */
     public String bwtViaSortedRotations(String t){
         // initializes return string, bwt
@@ -89,12 +88,12 @@ public class burrowsWheeler {
 *    *        to how many times it appears in the BWT string
      */
     public Object[] rankBwt(String bw){
-        // initialize return values, tots, and ranks
+        // initialize return values, tots and ranks
         Map<Character, Integer> tots = new HashMap<>();
         List<Integer> ranks = new ArrayList<>();
         // iterate through each character in the string, bw
         for(char c: bw.toCharArray()){
-            // for each new character, add a 0 element to the dictionary to indicate its first appearance
+            // for each new character, add a 0 element to the map to indicate its first appearance
             if(!tots.containsKey(c)){
                 tots.put(c, 0);
             }
@@ -132,7 +131,7 @@ public class burrowsWheeler {
             // Sets first.get(c) to totc, which is the index the current character c should first appear at
             first.put(c, totc);
             // Adds tots.get(c) to totc, which indicates that the next character should appear after all
-            //  instances of the current character, which would span [totc, totc + (tots.get(c) - 1)]
+            //  instances of the current character, which spans [totc, totc + (tots.get(c) - 1)]
             totc += tots.get(c);
         }
         return first;
@@ -163,7 +162,7 @@ public class burrowsWheeler {
          */
         while(bw.charAt(rowi) != '$'){
             // c is the last character at rowi in the sorted rotations, indexed by using
-            //  bw.substring(rowi, rowi+1), which gets just the last character of bw
+            //  bw.substring(rowi, rowi+1), which gets just the character at index rowi
             String c = bw.substring(rowi, rowi+1);
             // prepends c before the output string t
             // c must come before the starting character of the sorted rotation
