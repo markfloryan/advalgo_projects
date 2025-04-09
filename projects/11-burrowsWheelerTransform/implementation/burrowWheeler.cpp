@@ -1,3 +1,6 @@
+/*
+ * Adapted from https://nbviewer.org/github/BenLangmead/comp-genomics-class/blob/master/notebooks/CG_BWT_Reverse.ipynb
+ */
 #include <iostream>
 #include <vector>
 #include <map>
