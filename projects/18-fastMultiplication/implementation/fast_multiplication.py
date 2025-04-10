@@ -70,7 +70,6 @@ def multiply(a: int, b: int) -> int:
     # We also know that (a_0 + a_1 x + a_2 x^2) * (b_0 + b_1 x + b_2 x^2) = (a_0 b_0) + (a_1 b_0 + a_0 b_1) x + (a_2 b_0 + a_1 b_1 + a_0 b_2) x^2 + (a_2 b_1 + a_1 b_2) x^3 + (a_2 b_2) x^4
     # Multiplying these parts out is no faster than standard multiplication, though...
 
-    # TODO: recursive calls
     # Instead, we'll evaluate the polynomial at 5 points: x = 0, 1, -1, 2, and infinity
     x0 = a_parts[0] * b_parts[0] # C(0) = c_0 + c_1 * 0 + c_2 * 0^2 + c_3 * 0^3 + c_4 * 0^4 = c_0 = a_0 * b_0
     x1 = (a_parts[0] + a_parts[1] + a_parts[2]) * (b_parts[0] + b_parts[1] + b_parts[2]) # C(1) = c_0 + c_1 * 1 + c_2 * 1^2 + c_3 * 1^3 + c_4 * 1^4 = c_0 + c_1 + c_2 + c_3 + c_4 = (a_0 + a_1 + a_2) * (b_0 + b_1 + b_2)
