@@ -8,8 +8,8 @@ def calculateBase(a: int, b: int) -> int:
     # In a computer system, this is usually 2, but we can use 10 for human-friendliness
     radix = 10
     # Calculate the number of digits in the operands
-    numDigitsA = ceil(log(a, radix))
-    numDigitsB = ceil(log(b, radix))
+    numDigitsA = ceil(log(abs(a), radix))
+    numDigitsB = ceil(log(abs(b), radix))
     # Take the maximum number of digits in the operands and divide by 3
     # Take the ceiling in case the number of digits is not divisible by 3
     numDigitsMax = max(numDigitsA, numDigitsB)
@@ -45,6 +45,13 @@ def combine(parts: list[int], base: int) -> int:
     return result
 
 def multiply(a: int, b: int) -> int:
+    # Recursive base case: if either operand is 0, return 0
+    if a == 0 or b == 0:
+        return 0
+    # Recursive base case: one operand is in [-9, 9] -- return a * b
+    if abs(a) < 10 and abs(b) < 10:
+        return a * b
+    
     # Calculate the base for splitting the operands
     # Every part of the operand will be less than the base
     base = calculateBase(a, b)
@@ -67,11 +74,11 @@ def multiply(a: int, b: int) -> int:
     # Multiplying these parts out is no faster than standard multiplication, though...
 
     # Instead, we'll evaluate the polynomial at 5 points: x = 0, 1, -1, 2, and infinity
-    x0 = a_parts[0] * b_parts[0] # C(0) = c_0 + c_1 * 0 + c_2 * 0^2 + c_3 * 0^3 + c_4 * 0^4 = c_0 = a_0 * b_0
-    x1 = (a_parts[0] + a_parts[1] + a_parts[2]) * (b_parts[0] + b_parts[1] + b_parts[2]) # C(1) = c_0 + c_1 * 1 + c_2 * 1^2 + c_3 * 1^3 + c_4 * 1^4 = c_0 + c_1 + c_2 + c_3 + c_4 = (a_0 + a_1 + a_2) * (b_0 + b_1 + b_2)
-    x2 = (a_parts[0] - a_parts[1] + a_parts[2]) * (b_parts[0] - b_parts[1] + b_parts[2]) # C(-1) = c_0 + c_1 * -1 + c_2 * (-1)^2 + c_3 * (-1)^3 + c_4 * (-1)^4 = c_0 - c_1 + c_2 - c_3 + c_4 = (a_0 - a_1 + a_2) * (b_0 - b_1 + b_2)
-    x3 = (a_parts[0] + 2 * a_parts[1] + 4 * a_parts[2]) * (b_parts[0] + 2 * b_parts[1] + 4 * b_parts[2]) # C(2) = c_0 + c_1 * 2 + c_2 * 2^2 + c_3 * 2^3 + c_4 * 2^4 = c_0 + 2c_1 + 4c_2 + 8c_3 + 16c_4 = (a_0 + 2a_1 + 4a_2) * (b_0 + 2b_1 + 4b_2)
-    x4 = a_parts[2] * b_parts[2] # C(infinity) = c_4 = a_2 * b_2 -- because the other terms are negligible in comparison to the highest degree term
+    x0 = multiply(a_parts[0], b_parts[0]) # C(0) = c_0 + c_1 * 0 + c_2 * 0^2 + c_3 * 0^3 + c_4 * 0^4 = c_0 = a_0 * b_0
+    x1 = multiply((a_parts[0] + a_parts[1] + a_parts[2]), (b_parts[0] + b_parts[1] + b_parts[2])) # C(1) = c_0 + c_1 * 1 + c_2 * 1^2 + c_3 * 1^3 + c_4 * 1^4 = c_0 + c_1 + c_2 + c_3 + c_4 = (a_0 + a_1 + a_2) * (b_0 + b_1 + b_2)
+    x2 = multiply((a_parts[0] - a_parts[1] + a_parts[2]), (b_parts[0] - b_parts[1] + b_parts[2])) # C(-1) = c_0 + c_1 * -1 + c_2 * (-1)^2 + c_3 * (-1)^3 + c_4 * (-1)^4 = c_0 - c_1 + c_2 - c_3 + c_4 = (a_0 - a_1 + a_2) * (b_0 - b_1 + b_2)
+    x3 = multiply((a_parts[0] + 2 * a_parts[1] + 4 * a_parts[2]), (b_parts[0] + 2 * b_parts[1] + 4 * b_parts[2])) # C(2) = c_0 + c_1 * 2 + c_2 * 2^2 + c_3 * 2^3 + c_4 * 2^4 = c_0 + 2c_1 + 4c_2 + 8c_3 + 16c_4 = (a_0 + 2a_1 + 4a_2) * (b_0 + 2b_1 + 4b_2)
+    x4 = multiply(a_parts[2], b_parts[2]) # C(infinity) = c_4 = a_2 * b_2 -- because the other terms are negligible in comparison to the highest degree term
 
     # Now let's fill in the coefficients of the product polynomial
     products[0] = x0 # c_0 = C(0)

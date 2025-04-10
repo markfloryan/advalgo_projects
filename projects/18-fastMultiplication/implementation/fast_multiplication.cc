@@ -11,8 +11,8 @@ int calculateBase(ll a, ll b) {
     // In a computer system, this is usually 2, but we can use 10 for human-friendliness
     int radix = 10;
     // Calculate the number of digits in the operands
-    double numDigitsA = ceil(log(a) / log(radix));
-    double numDigitsB = ceil(log(b) / log(radix));
+    double numDigitsA = ceil(log(abs(a)) / log(radix));
+    double numDigitsB = ceil(log(abs(b)) / log(radix));
     // Take the maximum number of digits in the operands and divide by 3
     // Take the ceiling in case the number of digits is not divisible by 3
     double numDigitsMax = max(numDigitsA, numDigitsB);
@@ -49,6 +49,15 @@ ll combine(ll parts[], int base) {
 }
 
 ll multiply(ll a, ll b) {
+    // Recursive base case: if either operand is 0, return 0
+    if (a == 0 || b == 0) {
+        return 0;
+    }
+    // Recursive base case: one operand is in [-9, 9] -- return a * b
+    if (abs(a) < 10 && abs(b) < 10) {
+        return a * b;
+    }
+
     // Calculate the base for splitting the operands
     // Every part of the operand will be less than the base
     int base = calculateBase(a, b);
@@ -73,11 +82,11 @@ ll multiply(ll a, ll b) {
     // Multiplying these parts out is no faster than standard multiplication, though...
 
     // Instead, we'll evaluate the polynomial at 5 points: x = 0, 1, -1, 2, and infinity
-    ll x0 = aParts[0] * bParts[0]; // C(0) = c_0 + c_1 * 0 + c_2 * 0^2 + c_3 * 0^3 + c_4 * 0^4 = c_0 = a_0 * b_0
-    ll x1 = (aParts[0] + aParts[1] + aParts[2]) * (bParts[0] + bParts[1] + bParts[2]); // C(1) = c_0 + c_1 * 1 + c_2 * 1^2 + c_3 * 1^3 + c_4 * 1^4 = c_0 + c_1 + c_2 + c_3 + c_4 = (a_0 + a_1 + a_2) * (b_0 + b_1 + b_2)
-    ll x2 = (aParts[0] - aParts[1] + aParts[2]) * (bParts[0] - bParts[1] + bParts[2]); // C(-1) = c_0 + c_1 * -1 + c_2 * (-1)^2 + c_3 * (-1)^3 + c_4 * (-1)^4 = c_0 - c_1 + c_2 - c_3 + c_4 = (a_0 - a_1 + a_2) * (b_0 - b_1 + b_2)
-    ll x3 = (aParts[0] + 2 * aParts[1] + 4 * aParts[2]) * (bParts[0] + 2 * bParts[1] + 4 * bParts[2]); // C(2) = c_0 + c_1 * 2 + c_2 * 2^2 + c_3 * 2^3 + c_4 * 2^4 = c_0 + 2c_1 + 4c_2 + 8c_3 + 16c_4 = (a_0 + 2a_1 + 4a_2) * (b_0 + 2b_1 + 4b_2)
-    ll x4 = aParts[2] * bParts[2]; // C(infinity) = c_4 = a_2 * b_2 -- because the other terms are negligible in comparison to the highest degree term
+    ll x0 = multiply(aParts[0], bParts[0]); // C(0) = c_0 + c_1 * 0 + c_2 * 0^2 + c_3 * 0^3 + c_4 * 0^4 = c_0 = a_0 * b_0
+    ll x1 = multiply((aParts[0] + aParts[1] + aParts[2]), (bParts[0] + bParts[1] + bParts[2])); // C(1) = c_0 + c_1 * 1 + c_2 * 1^2 + c_3 * 1^3 + c_4 * 1^4 = c_0 + c_1 + c_2 + c_3 + c_4 = (a_0 + a_1 + a_2) * (b_0 + b_1 + b_2)
+    ll x2 = multiply((aParts[0] - aParts[1] + aParts[2]), (bParts[0] - bParts[1] + bParts[2])); // C(-1) = c_0 + c_1 * -1 + c_2 * (-1)^2 + c_3 * (-1)^3 + c_4 * (-1)^4 = c_0 - c_1 + c_2 - c_3 + c_4 = (a_0 - a_1 + a_2) * (b_0 - b_1 + b_2)
+    ll x3 = multiply((aParts[0] + 2 * aParts[1] + 4 * aParts[2]), (bParts[0] + 2 * bParts[1] + 4 * bParts[2])); // C(2) = c_0 + c_1 * 2 + c_2 * 2^2 + c_3 * 2^3 + c_4 * 2^4 = c_0 + 2c_1 + 4c_2 + 8c_3 + 16c_4 = (a_0 + 2a_1 + 4a_2) * (b_0 + 2b_1 + 4b_2)
+    ll x4 = multiply(aParts[2], bParts[2]); // C(infinity) = c_4 = a_2 * b_2 -- because the other terms are negligible in comparison to the highest degree term
 
     // Now let's fill in the coefficients of the product polynomial
     products[0] = x0; // c_0 = C(0)
