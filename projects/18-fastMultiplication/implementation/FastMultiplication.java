@@ -8,7 +8,7 @@ public class FastMultiplication {
         // Multiply
         long result = multiply(operandA, operandB);
         // Print the result
-        System.out.println("Result: " + result);
+        System.out.println(result);
     }
     private static long multiply(long a, long b) {
         // Calculate the base for splitting the operands
