@@ -14,11 +14,6 @@ public class FastMultiplication {
         // Calculate the base for splitting the operands
         // Every part of the operand will be less than the base
         int base = calculateBase(a, b);
-        // If the operands are small enough, we can use the standard multiplication
-        // This is the base case for the recursion
-        if (a < base && b < base) {
-            return a * b;
-        }
 
         // We can split the operand into 3 roughly equal-sized parts
         // The operand a is equivalent to the polynomial A(x) = a_0 + a_1 x + a_2 x^2, where x = base
