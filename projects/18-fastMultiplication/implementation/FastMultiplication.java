@@ -1,22 +1,58 @@
 // Implementation of Toom-3 algorithm for fast multiplication
 
 public class FastMultiplication {
-    public static void main(String[] args) {
-        // Get operands from command line arguments
-        long operandA = Long.parseLong(args[0]);
-        long operandB = Long.parseLong(args[1]);
-        // Multiply
-        long result = multiply(operandA, operandB);
-        // Print the result
-        System.out.println(result);
+    private static int calculateBase(long a, long b) {
+        // The base used in multiplication is a power of some number called radix
+        // In a computer system, this is usually 2, but we can use 10 for human-friendliness
+        int radix = 10;
+        // Calculate the number of digits in the operands
+        double numDigitsA = Math.ceil(Math.log(Math.abs(a)) / Math.log(radix));
+        double numDigitsB = Math.ceil(Math.log(Math.abs(b)) / Math.log(radix));
+        // Take the maximum number of digits in the operands and divide by 3
+        // Take the ceiling in case the number of digits is not divisible by 3
+        double numDigitsMax = Math.max(numDigitsA, numDigitsB);
+        int power = (int) Math.ceil(numDigitsMax / 3);
+        // Calculate the base as radix^power
+        return (int) Math.pow(radix, power);
     }
+
+    private static long[] split(long number, int base) {
+        // Split the number into 3 parts
+        long[] parts = new long[3];
+        // Take the lowest third of the number and store it in parts[0]
+        parts[0] = number % base;
+        // Remove the lowest third of the number
+        number /= base;
+        // Take the next third of the number and store it in parts[1]
+        parts[1] = number % base;
+        // Remove the next third of the number
+        number /= base;
+        // Take the last third of the number and store it in parts[2]
+        parts[2] = number;
+        return parts;
+    }
+
+    private static long combine(long[] parts, int base) {
+        // Combine the parts into a single number
+        // The number at parts[i] is the coefficient of base^i
+        // We calculate coefficient times base^i and add them together
+        // The result is the final product
+        long result = 0;
+        for (int i = 0; i < parts.length; i++) {
+            // Calculate parts[i] * base^i
+            long num = parts[i] * (long) Math.pow(base, i);
+            result += num;
+        }
+        return result;
+    }
+
     private static long multiply(long a, long b) {
         // Recursive base case: if either operand is 0, return 0
         if (a == 0 || b == 0) {
             return 0;
         }
         // Recursive base case: one operand is in [-9, 9] -- return a * b
-        if (Math.abs(a) < 10 && Math.abs(b) < 10) {
+        if (Math.abs(a) < 10 || Math.abs(b) < 10) {
             return a * b;
         }
 
@@ -64,46 +100,14 @@ public class FastMultiplication {
         // C(base) = c_0 + c_1 * base + c_2 * base^2 + c_3 * base^3 + c_4 * base^4 = our result
         return combine(products, base);
     }
-    private static int calculateBase(long a, long b) {
-        // The base used in multiplication is a power of some number called radix
-        // In a computer system, this is usually 2, but we can use 10 for human-friendliness
-        int radix = 10;
-        // Calculate the number of digits in the operands
-        double numDigitsA = Math.ceil(Math.log(Math.abs(a)) / Math.log(radix));
-        double numDigitsB = Math.ceil(Math.log(Math.abs(b)) / Math.log(radix));
-        // Take the maximum number of digits in the operands and divide by 3
-        // Take the ceiling in case the number of digits is not divisible by 3
-        double numDigitsMax = Math.max(numDigitsA, numDigitsB);
-        int power = (int) Math.ceil(numDigitsMax / 3);
-        // Calculate the base as radix^power
-        return (int) Math.pow(radix, power);
-    }
-    private static long[] split(long number, int base) {
-        // Split the number into 3 parts
-        long[] parts = new long[3];
-        // Take the lowest third of the number and store it in parts[0]
-        parts[0] = number % base;
-        // Remove the lowest third of the number
-        number /= base;
-        // Take the next third of the number and store it in parts[1]
-        parts[1] = number % base;
-        // Remove the next third of the number
-        number /= base;
-        // Take the last third of the number and store it in parts[2]
-        parts[2] = number;
-        return parts;
-    }
-    private static long combine(long[] parts, int base) {
-        // Combine the parts into a single number
-        // The number at parts[i] is the coefficient of base^i
-        // We calculate coefficient times base^i and add them together
-        // The result is the final product
-        long result = 0;
-        for (int i = 0; i < parts.length; i++) {
-            // Calculate parts[i] * base^i
-            long num = parts[i] * (long) Math.pow(base, i);
-            result += num;
-        }
-        return result;
+
+    public static void main(String[] args) {
+        // Get operands from command line arguments
+        long operandA = Long.parseLong(args[0]);
+        long operandB = Long.parseLong(args[1]);
+        // Multiply
+        long result = multiply(operandA, operandB);
+        // Print the result
+        System.out.println(result);
     }
 }

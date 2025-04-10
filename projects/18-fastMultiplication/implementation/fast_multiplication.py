@@ -49,7 +49,7 @@ def multiply(a: int, b: int) -> int:
     if a == 0 or b == 0:
         return 0
     # Recursive base case: one operand is in [-9, 9] -- return a * b
-    if abs(a) < 10 and abs(b) < 10:
+    if abs(a) < 10 or abs(b) < 10:
         return a * b
     
     # Calculate the base for splitting the operands
