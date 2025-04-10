@@ -52,7 +52,7 @@ public class FastMultiplication {
             return 0;
         }
         // Recursive base case: one operand is in [-9, 9] -- return a * b
-        if (Math.abs(a) < 10 || Math.abs(b) < 10) {
+        if (Math.abs(a) <= 10 || Math.abs(b) <= 10) {
             return a * b;
         }
 

@@ -54,7 +54,7 @@ ll multiply(ll a, ll b) {
         return 0;
     }
     // Recursive base case: one operand is in [-9, 9] -- return a * b
-    if (abs(a) < 10 || abs(b) < 10) {
+    if (abs(a) <= 10 || abs(b) <= 10) {
         return a * b;
     }
 

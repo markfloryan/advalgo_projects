@@ -51,7 +51,7 @@ fn multiply(a: i128, b: i128) -> i128 {
         return 0;
     }
     // Recursive base case: one operand is in [-9, 9] -- return a * b
-    if a.abs() < 10 || b.abs() < 10 {
+    if a.abs() <= 10 || b.abs() <= 10 {
         return a * b;
     }
 
