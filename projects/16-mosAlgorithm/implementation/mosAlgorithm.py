@@ -17,24 +17,24 @@ class Mo:
         
         results = list(range(len(queries)))
 
-        data.init()
+        self.data.init()
 
         l = 0
         r = -1
         for q in sortedQueries:
             while q[0] < l:
                 l -= 1
-                data.add(l)
+                self.data.add(l)
             while r < q[1]:
                 r += 1
-                data.add(r)
+                self.data.add(r)
             while l < q[0]:
-                data.remove(l)
+                self.data.remove(l)
                 l += 1
             while q[1] < r:
-                data.remove(r)
+                self.data.remove(r)
                 r -= 1
-            results[q[2]] = data.answer()
+            results[q[2]] = self.data.answer()
         
         return results
 
@@ -67,11 +67,12 @@ class ModeData:
     def remove(self, idx):
         val = self.array[idx]
         self.removeFromBucket(self.frequencies[val], val)
-        if self.frequencies[val] == self.modeFreq and not self.buckets[self.frequencies[val]]:
+        if self.frequencies[val] == self.modeFreq and not self.buckets[self.frequencies[val] - 1]:
             self.modeFreq -= 1
         self.frequencies[val] -= 1
         self.addToBucket(self.frequencies[val], val)
     def answer(self):
+        # print(self.frequencies, self.buckets)
         for val in self.buckets[self.modeFreq - 1]:
             return (val, self.modeFreq)
 
