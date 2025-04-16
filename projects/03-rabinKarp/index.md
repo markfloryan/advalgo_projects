@@ -1,9 +1,7 @@
-Project 00 - Coin Change
+Project 03 - Rabin Karp String Matching
 ===============================
 
 Go [back to home page](../../index.html)
-
-**NOTE THAT THIS IS JUST A TEMPLATE. THE LINKS BELOW DO NOT WORK UNTIL A PROJECT IS ACTUALLY SUBMITTED / PUSHED TO THIS REPOSITORY**
 
 <a name="overview"></a>Executive Summary
 ---------------------------------------
@@ -14,19 +12,24 @@ Go [back to home page](../../index.html)
 ---------------------------------------
 
 - Implementations:
-	- [C++](./implementations/coinChange.cpp)
-	- [Java](./implementations/coinChange.java)
-	- [Python](./implementations/coinChange.py)
+	- [C++](./implementations/rabinKarp.cpp)
+	- [Java](./implementations/rabinKarp.java)
+	- [Python](./implementations/rabinKarp.py)
 	- io
 		- [test input 1](./implementations/io/sample.in.1)
 		- [test output 1](./implementations/io/sample.out.1)
-		- ...add more as needed
+		- [test input 2](./implementations/io/sample.in.2)
+		- [test output 2](./implementations/io/sample.out.2)
+		- [test input 3](./implementations/io/sample.in.3)
+		- [test output 3](./implementations/io/sample.out.3)
+		- [test input 4](./implementations/io/sample.in.4)
+		- [test output 4](./implementations/io/sample.out.4)
 
 <a name="overview"></a>Slides
 ---------------------------------------
 
-- [Instructional Slides](./slides/lecture_coinChange.pptx)
-- [Presentation Slides](./slides/presentation_coinChange.pptx)
+- [Instructional Slides](./slides/lecture_rabinKarp.pptx)
+- [Presentation Slides](./slides/presentation_crabinKarp.pptx)
 
 
 <a name="overview"></a>Programming Challenge
@@ -40,5 +43,24 @@ Go [back to home page](../../index.html)
 	- Test Cases:
 		- [Case 1 input](./programmingChallenge/io/test.in.1)
 		- [Case 1 output](./programmingChallenge/io/test.out.1)
-		- ...add the others here as needed
+		- [Case 2 input](./programmingChallenge/io/test.in.2)
+		- [Case 2 output](./programmingChallenge/io/test.out.2)
+		- [Case 3 input](./programmingChallenge/io/test.in.3)
+		- [Case 3 output](./programmingChallenge/io/test.out.3)
+		- [Case 4 input](./programmingChallenge/io/test.in.4)
+		- [Case 4 output](./programmingChallenge/io/test.out.4)
+		- [Case 5 input](./programmingChallenge/io/test.in.5)
+		- [Case 5 output](./programmingChallenge/io/test.out.5)
+		- [Case 6 input](./programmingChallenge/io/test.in.6)
+		- [Case 6 output](./programmingChallenge/io/test.out.6)
+		- [Case 7 input](./programmingChallenge/io/test.in.7)
+		- [Case 7 output](./programmingChallenge/io/test.out.7)
+		- [Case 8 input](./programmingChallenge/io/test.in.8)
+		- [Case 8 output](./programmingChallenge/io/test.out.8)
+		- [Case 9 input](./programmingChallenge/io/test.in.9)
+		- [Case 9 output](./programmingChallenge/io/test.out.9)
+		- [Case 10 input](./programmingChallenge/io/test.in.10)
+		- [Case 10 output](./programmingChallenge/io/test.out.10)
+		- [Case 11 input](./programmingChallenge/io/test.in.11)
+		- [Case 11 output](./programmingChallenge/io/test.out.11)
 	
