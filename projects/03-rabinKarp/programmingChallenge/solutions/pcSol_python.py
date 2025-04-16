@@ -14,13 +14,12 @@ def count_palindromic_substrings(s):
     power = [1] * (n + 1)            # power[i] stores BASE^i modulo MOD for fast multiplication rollback
 
     for i in range(n):
-        # Building up the prefix hashes incrementally
-        # ord(s[i]) converts a character to its ASCII integer value
+        # Building up and store the prefix hashes incrementally
         prefix_hash[i + 1] = (prefix_hash[i] * BASE + ord(s[i])) % MOD
         rev_prefix_hash[i + 1] = (rev_prefix_hash[i] * BASE + ord(s_rev[i])) % MOD
         power[i + 1] = (power[i] * BASE) % MOD
 
-    # Utility function (nested) to extract the hash of a substring [l, r)
+    # Rolling hash function to extract the hash of a substring [l, r)
     # by subtracting the hash of the prefix before l from the prefix ending at r,
     # and adjusting for position using the precomputed powers of BASE
     def get_hash(l, r, h, p):
