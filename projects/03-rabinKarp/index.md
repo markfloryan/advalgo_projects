@@ -12,24 +12,24 @@ Go [back to home page](../../index.html)
 ---------------------------------------
 
 - Implementations:
-	- [C++](./implementations/rabinKarp.cpp)
-	- [Java](./implementations/rabinKarp.java)
-	- [Python](./implementations/rabinKarp.py)
+	- [C++](./implementation/rabinKarp.cpp)
+	- [Java](./implementation/rabinKarp.java)
+	- [Python](./implementation/rabinKarp.py)
 	- io
-		- [test input 1](./implementations/io/sample.in.1)
-		- [test output 1](./implementations/io/sample.out.1)
-		- [test input 2](./implementations/io/sample.in.2)
-		- [test output 2](./implementations/io/sample.out.2)
-		- [test input 3](./implementations/io/sample.in.3)
-		- [test output 3](./implementations/io/sample.out.3)
-		- [test input 4](./implementations/io/sample.in.4)
-		- [test output 4](./implementations/io/sample.out.4)
+		- [test input 1](./implementation/io/sample.in.1)
+		- [test output 1](./implementation/io/sample.out.1)
+		- [test input 2](./implementation/io/sample.in.2)
+		- [test output 2](./implementation/io/sample.out.2)
+		- [test input 3](./implementation/io/sample.in.3)
+		- [test output 3](./implementation/io/sample.out.3)
+		- [test input 4](./implementation/io/sample.in.4)
+		- [test output 4](./implementation/io/sample.out.4)
 
 <a name="overview"></a>Slides
 ---------------------------------------
 
 - [Instructional Slides](./slides/lecture_rabinKarp.pptx)
-- [Presentation Slides](./slides/presentation_crabinKarp.pptx)
+- [Presentation Slides](./slides/presentation_rabinKarp.pptx)
 
 
 <a name="overview"></a>Programming Challenge
@@ -37,9 +37,9 @@ Go [back to home page](../../index.html)
 
 - [Programming Challenge](./programmingChallenge/problemStatement.pdf)
 	- Solutions:
-		- [C++](./programmingChallenge/solutions.pcSol_cpp.cpp)
-		- [Java](./programmingChallenge/solutions.pcSol_java.java)
-		- [Python](./programmingChallenge/solutions.pcSol_python.py)
+		- [C++](./programmingChallenge/solutions/pcSol_cpp.cpp)
+		- [Java](./programmingChallenge/solutions/pcSol_java.java)
+		- [Python](./programmingChallenge/solutions/pcSol_python.py)
 	- Test Cases:
 		- [Case 1 input](./programmingChallenge/io/test.in.1)
 		- [Case 1 output](./programmingChallenge/io/test.out.1)
@@ -63,4 +63,22 @@ Go [back to home page](../../index.html)
 		- [Case 10 output](./programmingChallenge/io/test.out.10)
 		- [Case 11 input](./programmingChallenge/io/test.in.11)
 		- [Case 11 output](./programmingChallenge/io/test.out.11)
+		- [Case 12 input](./programmingChallenge/io/test.in.12)
+		- [Case 12 output](./programmingChallenge/io/test.out.12)
+		- [Case 13 input](./programmingChallenge/io/test.in.13)
+		- [Case 13 output](./programmingChallenge/io/test.out.13)
+		- [Case 14 input](./programmingChallenge/io/test.in.14)
+		- [Case 14 output](./programmingChallenge/io/test.out.14)
+		- [Case 15 input](./programmingChallenge/io/test.in.15)
+		- [Case 15 output](./programmingChallenge/io/test.out.15)
+		- [Case 16 input](./programmingChallenge/io/test.in.16)
+		- [Case 16 output](./programmingChallenge/io/test.out.16)
+		- [Case 17 input](./programmingChallenge/io/test.in.17)
+		- [Case 17 output](./programmingChallenge/io/test.out.17)
+		- [Case 18 input](./programmingChallenge/io/test.in.18)
+		- [Case 18 output](./programmingChallenge/io/test.out.18)
+		- [Case 19 input](./programmingChallenge/io/test.in.19)
+		- [Case 19 output](./programmingChallenge/io/test.out.19)
+		- [Case 20 input](./programmingChallenge/io/test.in.20)
+		- [Case 20 output](./programmingChallenge/io/test.out.20)
 	
