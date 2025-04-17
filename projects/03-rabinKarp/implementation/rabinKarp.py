@@ -1,36 +1,32 @@
 import sys
 import os
 
-def rabin_karp(text, pattern, prime=101):
-    n = len(text)
-    m = len(pattern)
-    d = 256  # number of characters in the input alphabet
-    h = pow(d, m-1, prime)
-    p = 0  # hash value for pattern
-    t = 0  # hash value for text window
-    result = []
+def rabin_karp(text, pattern):
+    indices, base, q, target_hash, curr_hash, l = [], 26, 10**9 + 7, 0, 0, 0
 
-    # Preprocessing: calculate the hash value of pattern and first text window
-    for i in range(m):
-        p = (d * p + ord(pattern[i])) % prime
-        t = (d * t + ord(text[i])) % prime
+    # Compute the hash of the pattern
+    for i in range(len(pattern)):
+        # Go in reverse of pattern to represent leftmost character as highest order
+        target_hash = (target_hash * base + (ord(pattern[i]) - ord('a') + 1)) % q
 
-    # Slide the pattern over text
-    for i in range(n - m + 1):
-        # Check the hash values
-        if p == t:
-            # If hash values match, check characters one by one
-            if text[i:i + m] == pattern:
-                result.append(i)
+    # Sliding window template
+    for r in range(len(text)):
+        # Left shift hash to make room for new character in base 26, then add new character's unicode normalized by 'a'
+        curr_hash = (curr_hash * base + (ord(text[r]) - ord('a') + 1)) % q
 
-        # Calculate hash value for next window of text
-        if i < n - m:
-            t = (d * (t - ord(text[i]) * h) + ord(text[i + m])) % prime
-            if t < 0:
-                t += prime
+        # Update hash value with rolling hash technique when window becomes oversized
+        if r - l + 1 > len(pattern):
+            # Remove leftmost highest order character at position l
+            curr_hash = (curr_hash - (ord(text[l]) - ord('a') + 1) * pow(base, len(pattern), q)) % q
+            l += 1
 
-    return result
+        # Check if the current window matches the pattern
+        if r - l + 1 == len(pattern) and curr_hash == target_hash:
+            if text[l:r+1] == pattern:      # Manual check to avoid false positives and spurious hits
+                indices.append(l)
 
+    # Final list of starting indices where the pattern is found in the text
+    return indices
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
