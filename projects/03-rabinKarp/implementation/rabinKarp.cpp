@@ -8,39 +8,40 @@
 using namespace std;
 
 vector<int> rabinKarp(const string& text, const string& pattern, int prime = 101) {
-    int n = text.length();
-    int m = pattern.length();
-    int d = 256; // Number of characters in the input alphabet
-    int h = 1;
+    vector<int> indices;
+    int base = 26;
+    int q = 1000000007;
+    long long target_hash = 0, curr_hash = 0;
+    int l = 0;
 
-    for (int i = 0; i < m - 1; i++)
-        h = (h * d) % prime;
-
-    int p = 0, t = 0;
-    vector<int> result;
-
-    // Preprocessing: hash pattern and first text window
-    for (int i = 0; i < m; i++) {
-        p = (d * p + pattern[i]) % prime;
-        t = (d * t + text[i]) % prime;
+    // Compute the hash of the pattern
+    for (int i = 0; i < pattern.size(); i++) {
+        // Go in reverse of pattern to represent leftmost character as highest order
+        target_hash = (target_hash * base + (pattern[i] - 'a' + 1)) % q;
     }
 
-    // Slide the pattern over text
-    for (int i = 0; i <= n - m; i++) {
-        if (p == t) {
-            if (text.substr(i, m) == pattern) {
-                result.push_back(i);
+    // Sliding window template
+    for (int r = 0; r < text.size(); r++) {
+        // Left shift hash to make room for new character in base 26, then add new character's unicode normalized by 'a'
+        curr_hash = (curr_hash * base + (text[r] - 'a' + 1)) % q;
+
+        // Update hash value with rolling hash technique when window becomes oversized
+        if (r - l + 1 > pattern.size()) {
+            // Remove leftmost highest order character at position l
+            curr_hash = (curr_hash - ((long long)(text[l] - 'a' + 1) * (long long)pow(base, pattern.size())) % q + q) % q;
+            l += 1;
+        }
+
+        // Check if the current window matches the pattern
+        if (r - l + 1 == pattern.size() && curr_hash == target_hash) {
+            if (text.substr(l, r - l + 1) == pattern) {      // Manual check to avoid false positives and spurious hits
+                indices.push_back(l);
             }
         }
-
-        if (i < n - m) {
-            t = (d * (t - text[i] * h) + text[i + m]) % prime;
-            if (t < 0)
-                t += prime;
-        }
     }
 
-    return result;
+    // Final list of starting indices where the pattern is found in the text
+    return indices;
 }
 
 vector<int> parseOutput(const string& filepath) {
@@ -74,7 +75,7 @@ int main(int argc, char* argv[]) {
     }
 
     string inputFile = argv[1];
-    string baseName = filesystem::path(inputFile).filename().string();
+    string baseName = std::filesystem::path(inputFile).filename().string();
     string testNumber = baseName.substr(baseName.find_last_of('.') + 1);
     string expectedOutputFile = "io/sample.out." + testNumber;
 

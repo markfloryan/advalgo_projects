@@ -3,41 +3,56 @@ import java.nio.file.*;
 import java.util.*;
 
 public class rabinKarp {
+    public static List<Integer> rabin_karp(String text, String pattern) {
+        List<Integer> indices = new ArrayList<>();
+        int base = 26;
+        int q = 1000000007;
+        long target_hash = 0, curr_hash = 0;
+        int l = 0;
 
-    public static List<Integer> rabinKarp(String text, String pattern, int prime) {
-        int n = text.length();
-        int m = pattern.length();
-        int d = 256; // number of characters in the input alphabet
-        int h = 1;
-        int p = 0; // hash value for pattern
-        int t = 0; // hash value for text window
-        List<Integer> result = new ArrayList<>();
-
-        // Calculate the hash factor h = pow(d, m-1) % prime
-        for (int i = 0; i < m - 1; i++) {
-            h = (h * d) % prime;
+        // Compute the hash of the pattern
+        for (int i = 0; i < pattern.length(); i++) {
+            // Go in reverse of pattern to represent leftmost character as highest order
+            target_hash = (target_hash * base + (pattern.charAt(i) - 'a' + 1)) % q;
         }
 
-        // Preprocessing: calculate hash value for pattern and first window
-        for (int i = 0; i < m; i++) {
-            p = (d * p + pattern.charAt(i)) % prime;
-            t = (d * t + text.charAt(i)) % prime;
-        }
+        // Sliding window template
+        for (int r = 0; r < text.length(); r++) {
+            // Left shift hash to make room for new character in base 26, then add new character's unicode normalized by 'a'
+            curr_hash = (curr_hash * base + (text.charAt(r) - 'a' + 1)) % q;
 
-        // Slide the pattern over the text
-        for (int i = 0; i <= n - m; i++) {
-            if (p == t) {
-                if (text.substring(i, i + m).equals(pattern)) {
-                    result.add(i);
+            // Update hash value with rolling hash technique when window becomes oversized
+            if (r - l + 1 > pattern.length()) {
+                // Remove leftmost highest order character at position l
+                curr_hash = (curr_hash - (text.charAt(l) - 'a' + 1) * modPow(base, pattern.length(), q)) % q;
+                l += 1;
+            }
+
+            // Check if the current window matches the pattern
+            if (r - l + 1 == pattern.length() && curr_hash == target_hash) {
+                if (text.substring(l, r + 1).equals(pattern)) {      // Manual check to avoid false positives and spurious hits
+                    indices.add(l);
                 }
             }
-
-            if (i < n - m) {
-                t = (d * (t - text.charAt(i) * h) + text.charAt(i + m)) % prime;
-                if (t < 0) t += prime;
-            }
         }
 
+        // Final list of starting indices where the pattern is found in the text
+        return indices;
+    }
+
+    // Helper method for modular exponentiation (equivalent to Python's pow(base, exponent, modulus))
+    private static long modPow(long base, long exponent, long modulus) {
+        if (modulus == 1) return 0;
+        
+        long result = 1;
+        base = base % modulus;
+        while (exponent > 0) {
+            if (exponent % 2 == 1) {
+                result = (result * base) % modulus;
+            }
+            exponent = exponent >> 1;
+            base = (base * base) % modulus;
+        }
         return result;
     }
 
@@ -63,7 +78,7 @@ public class rabinKarp {
         String text = lines.get(1).trim();
 
         // Run Rabin-Karp
-        List<Integer> actualOutput = rabinKarp(text, pattern, 101);
+        List<Integer> actualOutput = rabin_karp(text, pattern);
 
         // Read expected output
         List<Integer> expectedOutput = null;
