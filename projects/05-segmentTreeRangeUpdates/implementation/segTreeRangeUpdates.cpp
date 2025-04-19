@@ -1,4 +1,4 @@
-#include <iostream>
+// #include <iostream>
 #include <vector>
 
 using namespace std;
@@ -8,9 +8,25 @@ class Node {
     public:
         int l, r;
         int val;
-        bool marked;  // for range assignments
         Node* l_child;
         Node* r_child;
+
+        /*
+        For SegTreeAssignAndGet:
+
+        `marked` indicates whether or not every array value within 
+        this node's range is set to a common value.
+        */
+        bool marked;  
+
+        /*
+        For SegTreeAdditionAndMax:
+        
+        `lazy` stores the running sum of all of the addition queries that have 
+        been applied to the full range of the node but that have not been 
+        propogated down to its children yet
+        */
+        int lazy;
 
         Node(int left, int right) {
             l = left;
@@ -19,6 +35,7 @@ class Node {
 };
 
 
+// we provide a normal segtree implementation to compare against the modified versions
 class SegTreeStandard {
     public:
         SegTreeStandard(vector<int>& a) {
@@ -39,7 +56,7 @@ class SegTreeStandard {
                     + query(cur_node->r_child, max(l, cur_node->r_child->l), r);
         }
 
-        // standard single value update
+        // standard single-value update
         void update(Node* cur_node, int pos, int new_val) {
             if (cur_node->l == cur_node->r) {
                 cur_node->val = new_val;
@@ -51,14 +68,10 @@ class SegTreeStandard {
                 update(cur_node->r_child, pos, new_val);
             }
 
-            cur_node->val = merge(cur_node->l_child, cur_node->r_child);
+            cur_node->val = cur_node->l_child->val + cur_node->r_child->val;
         }
 
     private:
-        int merge(Node* node1, Node* node2) {
-            return node1->val + node2->val;
-        }
-
         void build(vector<int>& a, Node* cur_node) {
             if (cur_node->l == cur_node->r) {
                 cur_node->val = a[cur_node->l];
@@ -72,7 +85,7 @@ class SegTreeStandard {
             build(a, cur_node->l_child);
             build(a, cur_node->r_child);
 
-            cur_node->val = merge(cur_node->l_child, cur_node->r_child);
+            cur_node->val = cur_node->l_child->val + cur_node->r_child->val;
         }
 };
 
@@ -165,10 +178,6 @@ class SegTreeAdditionAndGet {
 };
 
 
-
-
-
-
 class SegTreeAssignAndGet {
     public:
         SegTreeAssignAndGet(vector<int>& a) {
@@ -245,11 +254,88 @@ class SegTreeAssignAndGet {
             build(a, cur_node->r_child);
 
             /*
-            now the node value store whatever the contiguous assignment
+            now the node value stores whatever the contiguous assignment
             value is on that segment, if it has one. This will be set 
             IF AND ONLY IF the node is marked. So, to start, we just 
             set it to -1 (nil)
             */
             cur_node->val = -1;
+        }
+};
+
+
+class SegTreeAdditionAndMax {
+    public:
+        SegTreeAdditionAndMax(vector<int>& a) {
+            Node* root = new Node(0, a.size() - 1);
+            build(a, root);
+        }
+
+        // returns the maximal value in `a[l...r]`
+        int query(Node* cur_node, int l, int r) {
+            // normal seg tree base cases
+            if (l > r) {
+                return -INFINITY;
+            }
+            if (l == cur_node->l && r == cur_node->r) {
+                return cur_node->val;
+            }
+            // we have to make calls to our children, so we need to push our info down
+            push(cur_node);
+            // now, query our children and take the max
+            return max(query(cur_node->l_child, l, min(r, cur_node->l_child->r)), 
+                        query(cur_node->r_child, max(r, cur_node->r_child->l), r));
+        }
+
+        // adds `add` to all numbers in the segment `a[l...r]`
+        void update(Node* cur_node, int l, int r, int add) {
+            // usual base case conditions
+            if (l > r) {
+                return;
+            }
+            if (l == cur_node->l && r == cur_node->r) {
+                // update our value, like normal
+                cur_node->val += add;
+                // but! we also need to add to lazy to store for later propogation
+                cur_node->lazy += add;
+                return;
+            }
+            // since we're calling our children, we need to push down info if we haven't already
+            push(cur_node);
+            // update the children, as usual
+            update(cur_node->l_child, l, min(r, cur_node->l_child->r), add);
+            update(cur_node->r_child, max(r, cur_node->r_child->l), r, add);
+            // to update our own value, just take the max of the children value
+            cur_node->val = max(cur_node->l_child->val, cur_node->r_child->val);
+        }
+
+    private:
+        void push(Node* node){
+            // push down our lazy value to our children's values
+            node->l_child->val += node->lazy;
+            node->r_child->val += node->lazy;
+            // AND push it down to the children's lazy values as well!
+            node->l_child->lazy += node->lazy;
+            node->r_child->lazy += node->lazy;
+            // now just reset our own lazy value
+            node->lazy = 0;
+        }
+
+        void build(vector<int>& a, Node* cur_node) {
+            if (cur_node->l == cur_node->r) {
+                // the maximum in a leaf node is just the array value
+                cur_node->val = a[cur_node->l];
+                return;
+            }
+
+            int mid = (cur_node->l + cur_node->r) / 2;
+            cur_node->l_child = new Node(cur_node->l, mid);
+            cur_node->r_child = new Node(mid + 1, cur_node->r);
+
+            build(a, cur_node->l_child);
+            build(a, cur_node->r_child);
+
+            // the maximum of this node's range is just the max of the children's maximums
+            cur_node->val = max(cur_node->l_child->val, cur_node->r_child->val);
         }
 };
