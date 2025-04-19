@@ -1,5 +1,9 @@
-// #include <iostream>
+#include <iostream>
 #include <vector>
+#include <string>
+#include <format>
+#include <fstream>
+#include <cassert>
 
 using namespace std;
 
@@ -38,8 +42,10 @@ class Node {
 // we provide a normal segtree implementation to compare against the modified versions
 class SegTreeStandard {
     public:
+        Node* root;
+
         SegTreeStandard(vector<int>& a) {
-            Node* root = new Node(0, a.size() - 1);
+            root = new Node(0, a.size() - 1);
             build(a, root);
         }
 
@@ -90,8 +96,10 @@ class SegTreeStandard {
 
 class SegTreeAdditionAndGet {
     public:
+        Node* root;
+
         SegTreeAdditionAndGet(vector<int>& a) {
-            Node* root = new Node(0, a.size() - 1);
+            root = new Node(0, a.size() - 1);
             build(a, root);
         }
 
@@ -174,8 +182,10 @@ class SegTreeAdditionAndGet {
 
 class SegTreeAssignAndGet {
     public:
+        Node* root;
+
         SegTreeAssignAndGet(vector<int>& a) {
-            Node* root = new Node(0, a.size() - 1);
+            root = new Node(0, a.size() - 1);
             build(a, root);
         }
 
@@ -260,8 +270,10 @@ class SegTreeAssignAndGet {
 
 class SegTreeAdditionAndMax {
     public:
+        Node* root;
+
         SegTreeAdditionAndMax(vector<int>& a) {
-            Node* root = new Node(0, a.size() - 1);
+            root = new Node(0, a.size() - 1);
             build(a, root);
         }
 
@@ -269,7 +281,7 @@ class SegTreeAdditionAndMax {
         int query(Node* cur_node, int l, int r) {
             // normal seg tree base cases
             if (l > r) {
-                return -INFINITY;
+                return -42069;
             }
             if (l == cur_node->l && r == cur_node->r) {
                 return cur_node->val;
@@ -278,7 +290,7 @@ class SegTreeAdditionAndMax {
             push(cur_node);
             // now, query our children and take the max
             return max(query(cur_node->l_child, l, min(r, cur_node->l_child->r)), 
-                        query(cur_node->r_child, max(r, cur_node->r_child->l), r));
+                        query(cur_node->r_child, max(l, cur_node->r_child->l), r));
         }
 
         // adds `add` to all numbers in the segment `a[l...r]`
@@ -298,7 +310,7 @@ class SegTreeAdditionAndMax {
             push(cur_node);
             // update the children, as usual
             update(cur_node->l_child, l, min(r, cur_node->l_child->r), add);
-            update(cur_node->r_child, max(r, cur_node->r_child->l), r, add);
+            update(cur_node->r_child, max(l, cur_node->r_child->l), r, add);
             // to update our own value, just take the max of the children value
             cur_node->val = max(cur_node->l_child->val, cur_node->r_child->val);
         }
@@ -333,3 +345,113 @@ class SegTreeAdditionAndMax {
             cur_node->val = max(cur_node->l_child->val, cur_node->r_child->val);
         }
 };
+
+
+// ------------- FOR TESTING -------------
+
+/*
+to test the implementations, cd into the implementation directory and run the following commands:
+
+g++ -std=c++11 segTreeRangeUpdates.cpp -o testcpp
+./testcpp
+
+there are three test cases that test each of the above modified segment trees, respectively.
+*/
+
+int main() {
+    // perform all 3 test cases
+    for (int test_num = 1; test_num <= 3; test_num++) {
+        cout << "TESTING VARIANT " << test_num << ":" << endl;
+        string test_fp = "io/test.in." + to_string(test_num);
+        string test_expected_fp = "io/test.expected." + to_string(test_num);
+
+        // cout << "got here 1";
+
+        // open file streams
+        ifstream read(test_fp);
+        ifstream expected_out(test_expected_fp);
+
+        // cout << "got here 2";
+
+        // read config vals
+        int V, N, Q;
+        read >> V >> N >> Q;
+
+        // read in input array
+        vector<int> a(N);
+        for (int i = 0; i < N; i++) {
+            read >> a[i];
+        }
+
+        // initialize trees
+        SegTreeAdditionAndGet segTree1(a);
+        SegTreeAssignAndGet segTree2(a);
+        SegTreeAdditionAndMax segTree3(a);
+
+        // cout << "got here 3";
+
+        // read in queries
+        for (int q = 0; q < Q; q++) {
+            // get the query type
+            string query_type;
+            read >> query_type;
+
+            if (query_type == "GET") {
+                int pos;
+                read >> pos;
+
+                // perform query
+                int res;
+                if (test_num == 1) {
+                    res = segTree1.get(segTree1.root, pos);
+                } else if (test_num == 2) {
+                    res = segTree2.get(segTree2.root, pos);
+                }
+
+                // get the expected val
+                int expected;
+                expected_out >> expected;
+
+                // compare
+                cout << "Got value " << res << " (Expected: " << expected << ")" << endl;
+                assert(res == expected);
+            } else if (query_type == "UPDATE") {
+                int L, R, X;
+                read >> L >> R >> X;
+
+                cout << "Updating range " << L << "-" << R << " with value " << X << endl;
+
+                // perform update queries
+                if (test_num == 1) {
+                    segTree1.update(segTree1.root, L, R, X);
+                } else if (test_num == 2) {
+                    segTree2.update(segTree2.root, L, R, X);
+                } else if (test_num == 3) {
+                    segTree3.update(segTree3.root, L, R, X);
+                }
+            } else if (query_type == "MAX") {
+                // we're guaranteed to be testing variant 3
+                int L, R;
+                read >> L >> R;
+
+                int res = segTree3.query(segTree3.root, L, R);
+                int expected;
+                expected_out >> expected;
+
+                // compare
+                cout << "Got max value " << res << " (Expected: " << expected << ")" << endl;
+                assert(res == expected);
+            }
+        }
+
+        cout << endl;
+
+        // close file streams
+        read.close();
+        expected_out.close();
+    }
+
+    cout << "ALL TESTS PASSED" << endl;
+
+    return 0;
+}
