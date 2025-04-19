@@ -43,8 +43,7 @@ class SegTreeStandard {
             build(a, root);
         }
 
-        // standard sum query
-        int query(Node* cur_node, int l, int r) {
+        int sum(Node* cur_node, int l, int r) {
             if (l > r) {
                 return 0;
             }
@@ -52,11 +51,10 @@ class SegTreeStandard {
                 return cur_node->val;
             }
 
-            return query(cur_node->l_child, l, min(r, cur_node->l_child->r))
-                    + query(cur_node->r_child, max(l, cur_node->r_child->l), r);
+            return sum(cur_node->l_child, l, min(r, cur_node->l_child->r))
+                    + sum(cur_node->r_child, max(l, cur_node->r_child->l), r);
         }
 
-        // standard single-value update
         void update(Node* cur_node, int pos, int new_val) {
             if (cur_node->l == cur_node->r) {
                 cur_node->val = new_val;
@@ -99,7 +97,7 @@ class SegTreeAdditionAndGet {
 
         // get simply returns `a[pos]`
         int get(Node* cur_node, int pos) {
-            // base case: if we're at a leaf node, just return it's value
+            // if we're at a leaf node, just return it's value
             if (cur_node->l == cur_node->r) {
                 return cur_node->val;
             }
@@ -107,10 +105,10 @@ class SegTreeAdditionAndGet {
             else, find out which child `pos` lies in, and query on that
             child -- BUT make sure to add the value from our current node
             to the answer. in this way, we keep a running tally of the 
-            additions as we go down.
+            additions as we go down to get the final value
             */
             if (pos <= cur_node->l_child->r) {
-                // add cur_node.val to the tally, query child
+                // add cur_node.val to the tally, then query the child
                 return cur_node->val + get(cur_node->l_child, pos);
             } else {
                 return cur_node->val + get(cur_node->r_child, pos);
@@ -120,14 +118,10 @@ class SegTreeAdditionAndGet {
 
         // update adds `add` to all numbers in the segment `a[l...r]`
         void update(Node* cur_node, int l, int r, int add) {
-            // Degenerate base case
+            // usual segtree base cases
             if (l > r) {
                 return;
             }
-            /*
-            Base case: If the update range perfectly matches the current 
-            node's range, add to the node's value
-            */
             if (l == cur_node->l && r == cur_node->r) {
                 cur_node->val += add;
                 return;
