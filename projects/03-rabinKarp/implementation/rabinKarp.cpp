@@ -10,7 +10,7 @@ using namespace std;
 vector<int> rabinKarp(const string& text, const string& pattern, int prime = 101) {
     vector<int> indices;
     int base = 26;
-    int q = 1000000007;
+    int q = 101;
     long long target_hash = 0, curr_hash = 0;
     int l = 0;
 

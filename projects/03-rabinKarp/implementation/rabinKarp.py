@@ -2,10 +2,12 @@ import sys
 import os
 
 def rabin_karp(text, pattern):
-    indices, base, q, target_hash, curr_hash, l = [], 26, 10**9 + 7, 0, 0, 0
+    indices, base, q, target_hash, curr_hash, l = [], 26, 101, 0, 0, 0
+    m = len(pattern)
+    high_order = pow(base, m, q)
 
     # Compute the hash of the pattern
-    for i in range(len(pattern)):
+    for i in range(m):
         # Go in reverse of pattern to represent leftmost character as highest order
         target_hash = (target_hash * base + (ord(pattern[i]) - ord('a') + 1)) % q
 
@@ -15,13 +17,13 @@ def rabin_karp(text, pattern):
         curr_hash = (curr_hash * base + (ord(text[r]) - ord('a') + 1)) % q
 
         # Update hash value with rolling hash technique when window becomes oversized
-        if r - l + 1 > len(pattern):
+        if r - l + 1 > m:
             # Remove leftmost highest order character at position l
-            curr_hash = (curr_hash - (ord(text[l]) - ord('a') + 1) * pow(base, len(pattern), q)) % q
+            curr_hash = (curr_hash - (ord(text[l]) - ord('a') + 1) * high_order) % q
             l += 1
 
         # Check if the current window matches the pattern
-        if r - l + 1 == len(pattern) and curr_hash == target_hash:
+        if r - l + 1 == m and curr_hash == target_hash:
             if text[l:r+1] == pattern:      # Manual check to avoid false positives and spurious hits
                 indices.append(l)
 
