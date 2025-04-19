@@ -28,7 +28,7 @@ int countPalindromicSubstrings(const string& s) {
     string r = string(s.rbegin(), s.rend());
 
     int base = 26;
-    int q = 1e9 + 7;
+    int q = 10007;
     int ans = 0;
 
     // Iterate over all possible starting indices of substrings
@@ -83,7 +83,7 @@ int parseOutput(const string& filepath) {
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        cout << "Usage: ./pcSol <input_file_path>" << endl;
+        cout << "Usage: ./pcSol_cpp.out ../io/test.in.#" << endl;
         return 1;
     }
 
@@ -93,8 +93,6 @@ int main(int argc, char* argv[]) {
     if (pos != string::npos) {
         expectedOutputFile.replace(pos, 2, "out");
     }
-
-    cout << "Looking for expected output in: " << expectedOutputFile << endl;
 
     ifstream infile(inputFile);
     if (!infile.is_open()) {

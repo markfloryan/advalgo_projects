@@ -8,7 +8,7 @@ public class pcSol_java {
         String r = new StringBuilder(s).reverse().toString();
 
         int base = 26;
-        int q = (int)1e9 + 7;
+        int q = (int)10007;
         int ans = 0;
 
         // Iterate over all possible starting indices of substrings
@@ -62,14 +62,11 @@ public class pcSol_java {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            System.out.println("Usage: java RabinKarp <input_file_path>");
+            System.out.println("Usage: java pcSol_java ../io/test.in.#");
             return;
         }
 
         String inputFile = args[0];
-        // String baseName = Paths.get(inputFile).getFileName().toString();
-        // String[] parts = baseName.split("\\.");
-        // String testNumber = parts[parts.length - 1];
         String expectedOutputFile = inputFile.replace("in", "out");
 
         // Read input file

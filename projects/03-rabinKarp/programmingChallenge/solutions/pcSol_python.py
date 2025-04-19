@@ -5,7 +5,7 @@ def count_palindromic_substrings(s):
     # Reverse the string for comparison later
     r = s[::-1]
 
-    base, q, ans = 26, 10**9 + 7, 0
+    base, q, ans = 26, 10007, 0
 
     # Iterate over all possible starting indices of substrings
     for i in range(len(s)):
@@ -39,7 +39,7 @@ def count_palindromic_substrings(s):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python3 pcSol_python.py <input_file_path>")
+        print("Usage: python3 pcSol_python.py ../io/test.in.#")
         sys.exit(1)
 
     input_file = sys.argv[1]
