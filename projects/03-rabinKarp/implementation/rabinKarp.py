@@ -2,28 +2,26 @@ import sys
 import os
 
 def rabin_karp(text, pattern):
-    indices, base, q, target_hash, curr_hash, l = [], 26, 101, 0, 0, 0
-    m = len(pattern)
-    high_order = pow(base, m, q)
+    indices, base, q, target_hash, curr_hash, l = [], 26, 10**9 + 7, 0, 0, 0
 
     # Compute the hash of the pattern
-    for i in range(m):
+    for i in range(len(pattern)):
         # Go in reverse of pattern to represent leftmost character as highest order
-        target_hash = (target_hash * base + (ord(pattern[i]) - ord('a') + 1)) % q
+        target_hash = (target_hash * base + (ord(pattern[i]) + 1)) % q
 
     # Sliding window template
     for r in range(len(text)):
         # Left shift hash to make room for new character in base 26, then add new character's unicode normalized by 'a'
-        curr_hash = (curr_hash * base + (ord(text[r]) - ord('a') + 1)) % q
+        curr_hash = (curr_hash * base + (ord(text[r]) + 1)) % q
 
         # Update hash value with rolling hash technique when window becomes oversized
-        if r - l + 1 > m:
+        if r - l + 1 > len(pattern):
             # Remove leftmost highest order character at position l
-            curr_hash = (curr_hash - (ord(text[l]) - ord('a') + 1) * high_order) % q
+            curr_hash = (curr_hash - (ord(text[l]) + 1) * pow(base, len(pattern), q)) % q
             l += 1
 
         # Check if the current window matches the pattern
-        if r - l + 1 == m and curr_hash == target_hash:
+        if r - l + 1 == len(pattern) and curr_hash == target_hash:
             if text[l:r+1] == pattern:      # Manual check to avoid false positives and spurious hits
                 indices.append(l)
 

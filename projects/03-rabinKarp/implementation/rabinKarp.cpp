@@ -10,25 +10,25 @@ using namespace std;
 vector<int> rabinKarp(const string& text, const string& pattern, int prime = 101) {
     vector<int> indices;
     int base = 26;
-    int q = 101;
+    int q = 1000000007;
     long long target_hash = 0, curr_hash = 0;
     int l = 0;
 
     // Compute the hash of the pattern
     for (int i = 0; i < pattern.size(); i++) {
         // Go in reverse of pattern to represent leftmost character as highest order
-        target_hash = (target_hash * base + (pattern[i] - 'a' + 1)) % q;
+        target_hash = (target_hash * base + (pattern[i] + 1)) % q;
     }
 
     // Sliding window template
     for (int r = 0; r < text.size(); r++) {
         // Left shift hash to make room for new character in base 26, then add new character's unicode normalized by 'a'
-        curr_hash = (curr_hash * base + (text[r] - 'a' + 1)) % q;
+        curr_hash = (curr_hash * base + (text[r] + 1)) % q;
 
         // Update hash value with rolling hash technique when window becomes oversized
         if (r - l + 1 > pattern.size()) {
             // Remove leftmost highest order character at position l
-            curr_hash = (curr_hash - ((long long)(text[l] - 'a' + 1) * (long long)pow(base, pattern.size())) % q + q) % q;
+            curr_hash = (curr_hash - ((long long)(text[l] + 1) * (long long)pow(base, pattern.size())) % q + q) % q;
             l += 1;
         }
 

@@ -8,7 +8,7 @@ public class pcSol_java {
         String r = new StringBuilder(s).reverse().toString();
 
         int base = 26;
-        int q = (int)10007;
+        int q = (int)1e9 + 7;
         int ans = 0;
 
         // Iterate over all possible starting indices of substrings
@@ -20,14 +20,14 @@ public class pcSol_java {
             // Iterate over all possible ending indices of substrings
             for (int j = i; j < s.length(); j++) {
                 // Convert current character to a number based on unicode normalized by 'a'
-                int currentCharValue = s.charAt(j) - 'a' + 1;
+                int currentCharValue = s.charAt(j) + 1;
 
                 // Update rolling hash for original string, we are adding a character to the end so left shift and make space for lower order bit to be added
                 originalHash = (originalHash * base + currentCharValue) % q;
 
                 // Compute position of corresponding character in the reversed string
                 int reverseCharIndex = r.length() - j - 1;
-                int reverseCharValue = r.charAt(reverseCharIndex) - 'a' + 1;
+                int reverseCharValue = r.charAt(reverseCharIndex) + 1;
 
                 // For reversed hash the new character added is at the beginning, so we need to set/add higher order bit to hash
                 reversedHash = (reversedHash + reverseCharValue * modPow(base, j - i, q)) % q;
@@ -62,11 +62,14 @@ public class pcSol_java {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            System.out.println("Usage: java pcSol_java ../io/test.in.#");
+            System.out.println("Usage: java RabinKarp <input_file_path>");
             return;
         }
 
         String inputFile = args[0];
+        // String baseName = Paths.get(inputFile).getFileName().toString();
+        // String[] parts = baseName.split("\\.");
+        // String testNumber = parts[parts.length - 1];
         String expectedOutputFile = inputFile.replace("in", "out");
 
         // Read input file

@@ -6,27 +6,25 @@ public class rabinKarp {
     public static List<Integer> rabin_karp(String text, String pattern) {
         List<Integer> indices = new ArrayList<>();
         int base = 26;
-        int q = 101;
+        int q = 1000000007;
         long target_hash = 0, curr_hash = 0;
         int l = 0;
 
         // Compute the hash of the pattern
         for (int i = 0; i < pattern.length(); i++) {
             // Go in reverse of pattern to represent leftmost character as highest order
-            target_hash = (target_hash * base + (pattern.charAt(i) - 'a' + 1)) % q;
+            target_hash = (target_hash * base + (pattern.charAt(i) + 1)) % q;
         }
 
         // Sliding window template
         for (int r = 0; r < text.length(); r++) {
             // Left shift hash to make room for new character in base 26, then add new character's unicode normalized by 'a'
-            curr_hash = (curr_hash * base + (text.charAt(r) - 'a' + 1)) % q;
+            curr_hash = (curr_hash * base + (text.charAt(r) + 1)) % q;
 
             // Update hash value with rolling hash technique when window becomes oversized
             if (r - l + 1 > pattern.length()) {
                 // Remove leftmost highest order character at position l
-                curr_hash = (curr_hash - (text.charAt(l) - 'a' + 1) * modPow(base, pattern.length(), q)) % q;
-                // Java might return negative mod
-                if (curr_hash < 0) curr_hash += q;
+                curr_hash = (curr_hash - (text.charAt(l) + 1) * modPow(base, pattern.length(), q)) % q;
                 l += 1;
             }
 
@@ -60,7 +58,7 @@ public class rabinKarp {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            System.out.println("Usage: java rabinKarp <input_file_path>");
+            System.out.println("Usage: java RabinKarp <input_file_path>");
             return;
         }
 

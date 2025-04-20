@@ -28,7 +28,7 @@ int countPalindromicSubstrings(const string& s) {
     string r = string(s.rbegin(), s.rend());
 
     int base = 26;
-    int q = 10007;
+    int q = 1e9 + 7;
     int ans = 0;
 
     // Iterate over all possible starting indices of substrings
@@ -40,14 +40,14 @@ int countPalindromicSubstrings(const string& s) {
         // Iterate over all possible ending indices of substrings
         for (int j = i; j < s.length(); j++) {
             // Convert current character to a number based on unicode normalized by 'a'
-            int currentCharValue = s[j] - 'a' + 1;
+            int currentCharValue = s[j] + 1;
 
             // Update rolling hash for original string, we are adding a character to the end so left shift and make space for lower order bit to be added
             originalHash = (originalHash * base + currentCharValue) % q;
 
             // Compute position of corresponding character in the reversed string
             int reverseCharIndex = r.length() - j - 1;
-            int reverseCharValue = r[reverseCharIndex] - 'a' + 1;
+            int reverseCharValue = r[reverseCharIndex] + 1;
 
             // For reversed hash the new character added is at the beginning, so we need to set/add higher order bit to hash
             reversedHash = (reversedHash + reverseCharValue * modPow(base, j - i, q)) % q;
@@ -83,7 +83,7 @@ int parseOutput(const string& filepath) {
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        cout << "Usage: ./pcSol_cpp.out ../io/test.in.#" << endl;
+        cout << "Usage: ./pcSol <input_file_path>" << endl;
         return 1;
     }
 
@@ -93,6 +93,8 @@ int main(int argc, char* argv[]) {
     if (pos != string::npos) {
         expectedOutputFile.replace(pos, 2, "out");
     }
+
+    cout << "Looking for expected output in: " << expectedOutputFile << endl;
 
     ifstream infile(inputFile);
     if (!infile.is_open()) {
