@@ -362,8 +362,8 @@ int main() {
     // perform all 3 test cases
     for (int test_num = 1; test_num <= 3; test_num++) {
         cout << "TESTING VARIANT " << test_num << ":" << endl;
-        string test_fp = "io/test.in." + to_string(test_num);
-        string test_expected_fp = "io/test.expected." + to_string(test_num);
+        string test_fp = "io/sample.in." + to_string(test_num);
+        string test_expected_fp = "io/sample.out." + to_string(test_num);
 
         // cout << "got here 1";
 
