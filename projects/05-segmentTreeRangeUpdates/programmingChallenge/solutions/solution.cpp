@@ -165,7 +165,7 @@ do we need to have the numbers sorted as input? can we have negative values?
 
 
 int main() {
-    int test_cases = 2;
+    int test_cases = 20;
 
     for (int test_case = 1; test_case <= test_cases; test_case++) {
         cout << "test case " << test_case << endl;
@@ -217,7 +217,9 @@ int main() {
                 */
 
                 int res = gcd_helper(add_segtree.get(add_segtree.root, l), gcd_segtree.query(gcd_segtree.root, l, r - 1));
-                cout << res << endl;
+
+                // UNCOMMENT FOR NORMAL SOLUTION (it is just  too many prints for the big test cases)
+                // cout << res << endl;
 
                 // ---- FOR TESTING ----
                 int expected;
