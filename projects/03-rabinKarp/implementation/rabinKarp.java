@@ -60,7 +60,7 @@ public class rabinKarp {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            System.out.println("Usage: java RabinKarp <input_file_path>");
+            System.out.println("Usage: java rabinKarp <input_file_path>");
             return;
         }
 
