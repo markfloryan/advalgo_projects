@@ -50,6 +50,9 @@ if __name__ == "__main__":
                     # TODO: come back when you get seg tree implementations
                     res = gcd_helper(add_segtree.get(l), gcd_segtree.query(l, r - 1))
 
+                    # UNCOMMENT FOR NORMAL SOLUTION
+                    # print(res)
+
                     # ---- FOR TESTING ----
                     expected = int(test_out.readline())
                     assert res == expected
