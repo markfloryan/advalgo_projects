@@ -217,7 +217,6 @@ int main() {
                 */
 
                 int res = gcd_helper(add_segtree.get(add_segtree.root, l), gcd_segtree.query(gcd_segtree.root, l, r - 1));
-
                 // UNCOMMENT FOR NORMAL SOLUTION (it is just  too many prints for the big test cases)
                 // cout << res << endl;
 
@@ -253,6 +252,8 @@ int main() {
                 gcd_segtree.update(gcd_segtree.root, l-1, x);
                 // SUBTRACT x from the right boundary
                 gcd_segtree.update(gcd_segtree.root, r, -x);
+                for i in range(l, r+1):
+
             }
         }
 

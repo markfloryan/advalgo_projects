@@ -77,7 +77,7 @@ class SegTreeGCD:
 if __name__ == "__main__":
     test_cases = 20
 
-    for test_case in range(1, 21):
+    for test_case in range(1, test_cases+1):
         print(f"test case {test_case}")
         test_in_fp = f"../io/test.in.{test_case}"
         test_out_fp = f"../io/test.out.{test_case}"
@@ -94,7 +94,7 @@ if __name__ == "__main__":
             # construct seg trees
             add_segtree = SegTreeAdditionAndGet(a)
             gcd_segtree = SegTreeGCD(diff_a)
-            # gcd = SegTreeGCD(a)
+            gcd = SegTreeGCD(a)
 
             for _ in range(Q):
                 query = test_in.readline().strip()
@@ -102,18 +102,16 @@ if __name__ == "__main__":
                 if query.startswith("GCD"):
                     _, l, r = query.split()
                     l, r = int(l), int(r)
-                    res = math.gcd(add_segtree.get(1, 0, len(a)-1, l), gcd_segtree.query(1, 0, len(a)-1, l, r-1))
-                    # res = gcd.query(1, 0, len(a)-1, l, r)
-                    # print("----")
+                    res = math.gcd(add_segtree.get(1, 0, len(a)-1, l), gcd_segtree.query(1, 0, len(diff_a)-1, l, r-1))
+                    # uncomment this! 
                     # print(res)
 
                     # ---- FOR TESTING ----
                     expected = int(test_out.readline())
-                    # print(expected)
-                    if res != expected:
-                        print(add_segtree.get(1, 0, len(a)-1, l), gcd_segtree.query(1, 0, len(a)-1, l, r-1))
-                        print(res, expected)
-                    # assert res == expected
+                    # if res != expected:
+                        # print(add_segtree.get(1, 0, len(a)-1, l), gcd_segtree.query(1, 0, len(diff_a)-1, l, r-1))
+                        # print(res, expected)
+                    assert res == expected
                     # ---------------------
 
                 elif query.startswith("ADD"):
@@ -123,5 +121,7 @@ if __name__ == "__main__":
                     # range update
                     add_segtree.update(1, 0, len(a)-1, l, r, x)
                     # only boundary points change in difference array
-                    gcd_segtree.update(1, 0, len(a)-1, l - 1, x)
-                    gcd_segtree.update(1, 0, len(a)-1, r, -x)
+                    gcd_segtree.update(1, 0, len(diff_a)-1, l - 1, x)
+                    gcd_segtree.update(1, 0, len(diff_a)-1, r, -x)
+                    # for i in range(l, r+1):
+                    #     gcd.update(1, 0, len(a), i, x)
