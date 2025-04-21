@@ -20,7 +20,7 @@ class Node {
         }
 };
 
-
+// no comments included on this class since it's just copy paste from implementation
 class SegTreeAdditionAndGet {
     public:
         Node* root;
@@ -71,7 +71,7 @@ class SegTreeAdditionAndGet {
         }
 };
 
-
+// gcd helper since the c++ returns -1 sometimes
 int gcd_helper(int A,int B) {
     if (A == 0) return B;
     if (B == 0) return A;
@@ -86,10 +86,11 @@ int gcd_helper(int A,int B) {
     }
 }
 
-
+// a normal range query, single point update seg-tree that supports GCD queries
 class SegTreeGCD {
     public:
         Node* root;
+        // the length of the array we store
         int length;
 
         SegTreeGCD(vector<int>& a) {
@@ -98,6 +99,7 @@ class SegTreeGCD {
             build(a, root);
         }
 
+        // this is a standard segtree range query -- nothing special to say
         int query(Node* cur_node, int l, int r) {
             if (l > r) {
                 return 0;
@@ -122,7 +124,7 @@ class SegTreeGCD {
                 cur_node->val += add;
                 return;
             }
-            // update the correct child
+            // update the correct child based on which index we're searching
             if (pos <= cur_node->l_child->r) {
                 update(cur_node->l_child, pos, add);
             } else {
@@ -133,6 +135,7 @@ class SegTreeGCD {
         }
 
     private:
+        // again, standard
         void build(vector<int>& a, Node* cur_node) {
             if (cur_node->l == cur_node->r) {
                 // the gcd of a single number is just that number
@@ -154,9 +157,6 @@ class SegTreeGCD {
 
 
 
-
-
-
 /*
 NOTES: 
 
@@ -170,22 +170,23 @@ int main() {
     for (int test_case = 1; test_case <= test_cases; test_case++) {
         cout << "test case " << test_case << endl;
         // open file streams
-        // cout << "opening files" << endl;
         string test_in_fp = "../io/test.in." + to_string(test_case);
         string test_out_fp = "../io/test.out." + to_string(test_case);
         ifstream test_in(test_in_fp);
         ifstream test_out(test_out_fp);
 
+        // read in parameters
         int N, Q;
         test_in >> N >> Q;
 
+        // read in the file (list of integers)
         vector<int> a(N);
         for (int i = 0; i < N; i++) {
             test_in >> a[i];
         }
 
         /*
-        "difference" vector of size N - 1:
+        construct the "difference" vector of size N - 1:
         [a_2 - a_1, a_3 - a_2, ..., a_n - a_{n-1}]
         */
         vector<int> diff_a(N-1);
@@ -193,8 +194,9 @@ int main() {
             diff_a[i-1] = a[i] - a[i-1];
         }
 
-        // construct segtrees
+        // construct an add + get seg tree on the original array
         SegTreeAdditionAndGet add_segtree(a);
+        // construct a gcd seg tree ON THE DIFFERENCE ARRAY. this will allow for gcd computations that are minimally affected by range updates
         SegTreeGCD gcd_segtree(diff_a);
 
         // perform queries
@@ -217,13 +219,13 @@ int main() {
                 */
 
                 int res = gcd_helper(add_segtree.get(add_segtree.root, l), gcd_segtree.query(gcd_segtree.root, l, r - 1));
-                // UNCOMMENT FOR NORMAL SOLUTION (it is just  too many prints for the big test cases)
-                // cout << res << endl;
+                // comment out if you dont want computer to explode (it is just  too many prints for the big test cases)
+                cout << res << endl;
 
                 // ---- FOR TESTING ----
                 int expected;
                 test_out >> expected;
-                assert(res == expected);
+                assert(res == expected); // test against expected
                 // ---------------------
             } else if (query_type == "ADD") {
                 int l, r, x;
