@@ -3,7 +3,7 @@ Project 05 - Segment Tree Range Updates
 
 Go [back to home page](../../index.html)
 
-**NOTE THAT THIS IS JUST A TEMPLATE. THE LINKS BELOW DO NOT WORK UNTIL A PROJECT IS ACTUALLY SUBMITTED / PUSHED TO THIS REPOSITORY**
+
 
 <a name="overview"></a>Executive Summary
 ---------------------------------------
