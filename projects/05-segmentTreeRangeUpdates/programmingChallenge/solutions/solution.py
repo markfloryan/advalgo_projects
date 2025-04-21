@@ -138,7 +138,7 @@ if __name__ == "__main__":
                     # ---------------------
 
                 elif query.startswith("ADD"):
-                    _, l, r, x = query.split()p
+                    _, l, r, x = query.split()
                     l, r, x = int(l), int(r), int(x)
 
                     # range update
