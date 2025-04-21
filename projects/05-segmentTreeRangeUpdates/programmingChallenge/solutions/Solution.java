@@ -138,79 +138,125 @@ public class Solution {
         }
     }
 
-
-    public static void main(String[] args) throws IOException {
+    public void runTestCases() throws IOException {
         int testCases = 20;
+        int totalGcdQueries = 0;
+        int passedGcdQueries = 0;
 
         for (int testCase = 1; testCase <= testCases; testCase++) {
-            System.out.println("Running test case " + testCase);
+            System.out.println("\n----- Test Case " + testCase + " -----");
 
-            String testInPath = "programmingChallenge/io/test.in." + testCase;
-            String testOutPath = "programmingChallenge/io/test.out." + testCase;
+            String testInFp = "programmingChallenge/io/test.in." + testCase;
+            String testOutFp = "programmingChallenge/io/test.out." + testCase;
 
-            BufferedReader testIn = new BufferedReader(new FileReader(testInPath));
-            BufferedReader testOut = new BufferedReader(new FileReader(testOutPath));
+            try {
+                BufferedReader testIn = new BufferedReader(new FileReader(testInFp));
+                BufferedReader testOut = new BufferedReader(new FileReader(testOutFp));
 
-            StringTokenizer tokenizer = new StringTokenizer(testIn.readLine());
-            int N = Integer.parseInt(tokenizer.nextToken());
-            int Q = Integer.parseInt(tokenizer.nextToken());
+                StringTokenizer st = new StringTokenizer(testIn.readLine());
+                int N = Integer.parseInt(st.nextToken());
+                int Q = Integer.parseInt(st.nextToken());
 
-            int[] a = new int[N];
-            tokenizer = new StringTokenizer(testIn.readLine());
-            for (int i = 0; i < N; i++) {
-                a[i] = Integer.parseInt(tokenizer.nextToken());
-            }
+                System.out.println("Array size: " + N + ", Queries: " + Q);
 
-            int[] diffA = new int[N - 1];
-            for (int i = 1; i < N; i++) {
-                diffA[i - 1] = a[i] - a[i - 1];
-            }
-
-            Solution solutionInstance = new Solution();
-            SegTreeAdditionAndGet addSegTree = solutionInstance.new SegTreeAdditionAndGet(a);
-            SegTreeGCD gcdSegTree = solutionInstance.new SegTreeGCD(diffA);
-
-            boolean passed = true;
-
-            for (int i = 0; i < Q; i++) {
-                String line = testIn.readLine();
-                tokenizer = new StringTokenizer(line);
-                String queryType = tokenizer.nextToken();
-
-                if (queryType.equals("GCD")) {
-                    int l = Integer.parseInt(tokenizer.nextToken());
-                    int r = Integer.parseInt(tokenizer.nextToken());
-
-                    int aL = addSegTree.get(l);
-                    int gcd = gcdSegTree.query(l, r - 1);
-                    int res = solutionInstance.gcdHelper(aL, gcd);
-
-                    int expected = Integer.parseInt(testOut.readLine().trim());
-                    if (res != expected) {
-                        System.out.println("Test case " + testCase
-                                + " failed on GCD query: expected " + expected + ", got " + res);
-                        passed = false;
-                    }
-
-                } else if (queryType.equals("ADD")) {
-                    int l = Integer.parseInt(tokenizer.nextToken());
-                    int r = Integer.parseInt(tokenizer.nextToken());
-                    int x = Integer.parseInt(tokenizer.nextToken());
-
-                    addSegTree.update(l, r, x);
-                    gcdSegTree.update(l - 1, x);
-                    gcdSegTree.update(r, -x);
+                int[] a = new int[N];
+                st = new StringTokenizer(testIn.readLine());
+                for (int i = 0; i < N; i++) {
+                    a[i] = Integer.parseInt(st.nextToken());
                 }
-            }
 
-            testIn.close();
-            testOut.close();
+                // Output first few elements of the array for verification
+                System.out.print("Array sample: [");
+                for (int i = 0; i < Math.min(5, N); i++) {
+                    System.out.print(a[i] + (i < Math.min(5, N) - 1 ? ", " : ""));
+                }
+                System.out.println(N > 5 ? ", ...]" : "]");
 
-            if (passed) {
-                System.out.println("Test case " + testCase + " PASSED");
-            } else {
-                System.out.println("Test case " + testCase + " FAILED");
+                // Create the difference array
+                int[] diffA = new int[N - 1];
+                for (int i = 1; i < N; i++) {
+                    diffA[i - 1] = a[i] - a[i - 1];
+                }
+
+                // Construct segment trees
+                SegTreeAdditionAndGet addSegTree = new SegTreeAdditionAndGet(a);
+                SegTreeGCD gcdSegTree = new SegTreeGCD(diffA);
+
+                int gcdQueriesInTestCase = 0;
+                int passedGcdQueriesInTestCase = 0;
+
+                // Perform queries
+                for (int i = 0; i < Q; i++) {
+                    st = new StringTokenizer(testIn.readLine());
+                    String queryType = st.nextToken();
+
+                    if (queryType.equals("GCD")) {
+                        int l = Integer.parseInt(st.nextToken());
+                        int r = Integer.parseInt(st.nextToken());
+
+                        int res = gcdHelper(addSegTree.get(l), gcdSegTree.query(l, r - 1));
+                        gcdQueriesInTestCase++;
+                        totalGcdQueries++;
+
+                        // For testing
+                        int expected = Integer.parseInt(testOut.readLine());
+
+                        if (res == expected) {
+                            passedGcdQueriesInTestCase++;
+                            passedGcdQueries++;
+                            System.out.println("GCD Query " + gcdQueriesInTestCase
+                                    + ": PASSED - GCD(" + l + ", " + r + ") = " + res);
+                        } else {
+                            System.out.println("GCD Query " + gcdQueriesInTestCase
+                                    + ": FAILED - GCD(" + l + ", " + r + ") Expected: " + expected
+                                    + ", Got: " + res);
+                        }
+                    } else if (queryType.equals("ADD")) {
+                        int l = Integer.parseInt(st.nextToken());
+                        int r = Integer.parseInt(st.nextToken());
+                        int x = Integer.parseInt(st.nextToken());
+
+                        System.out.println(
+                                "ADD Query: Adding " + x + " to range [" + l + ", " + r + "]");
+
+                        // Normal range update
+                        addSegTree.update(l, r, x);
+
+                        // ADD x to the left boundary
+                        if (l > 0) {
+                            gcdSegTree.update(l - 1, x);
+                        }
+
+                        // SUBTRACT x from the right boundary
+                        if (r < N - 1) {
+                            gcdSegTree.update(r, -x);
+                        }
+                    }
+                }
+
+                System.out
+                        .println("Test case " + testCase + " results: " + passedGcdQueriesInTestCase
+                                + "/" + gcdQueriesInTestCase + " GCD queries passed");
+
+                testIn.close();
+                testOut.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Test case " + testCase + " files not found: " + e.getMessage());
             }
         }
+
+        System.out.println("\n----- Overall Results -----");
+        System.out.println("Total GCD queries across all test cases: " + passedGcdQueries + "/"
+                + totalGcdQueries + " passed");
+        if (passedGcdQueries == totalGcdQueries) {
+            System.out.println("ALL TESTS PASSED! ✅");
+        } else {
+            System.out.println("SOME TESTS FAILED ❌");
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Solution solution = new Solution();
+        solution.runTestCases();
     }
 }

@@ -1,7 +1,6 @@
 package implementation;
 
 import java.io.*;
-import java.util.*;
 
 class Node {
     int l, r, val;
@@ -21,7 +20,7 @@ class Node {
 
 // SegTreeStandard: Basic segment tree for range sum queries
 class SegTreeStandard {
-
+    Node root;
 }
 
 
@@ -37,10 +36,15 @@ class SegTreeAssignAndGet {
 }
 
 
+class SegTreeAdditionAndMax {
+
+}
+
+
 // Main class for testing
 public class SegTreeRangeUpdates {
     public static void main(String[] args) throws IOException {
-        // Test cases and input handling can be added here
+
     }
 }
 
