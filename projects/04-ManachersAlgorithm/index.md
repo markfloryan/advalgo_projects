@@ -3,8 +3,6 @@ Project 04 -Manacher's Algorithm
 
 Go [back to home page](../../index.html)
 
-**NOTE THAT THIS IS JUST A TEMPLATE. THE LINKS BELOW DO NOT WORK UNTIL A PROJECT IS ACTUALLY SUBMITTED / PUSHED TO THIS REPOSITORY**
-
 <a name="overview"></a>Executive Summary
 ---------------------------------------
 
@@ -13,7 +11,7 @@ Go [back to home page](../../index.html)
 <a name="overview"></a>Implementation
 ---------------------------------------
 
-- Implementations:advalgoproj\advalgo_projects\projects\04-Manacher's Algorithm\
+- Implementations:
 	- [C++](./implementations/manachersAlgorithm.cpp)
 	- [Java](./implementations/manachersAlgorithm.java)
 	- [Python](./implementations/manachersAlgorithm.py)
@@ -26,8 +24,8 @@ Go [back to home page](../../index.html)
 		- [test output 3](./implementations/io/sample.out.3)
         - [test input 4](./implementations/io/sample.in.4)
 		- [test output 4](./implementations/io/sample.out.4)
-        - [test input 3](./implementations/io/sample.in.5)
-		- [test output 3](./implementations/io/sample.out.5)
+        - [test input 5](./implementations/io/sample.in.5)
+		- [test output 5](./implementations/io/sample.out.5)
 
 <a name="overview"></a>Slides
 ---------------------------------------
