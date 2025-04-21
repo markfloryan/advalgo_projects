@@ -37,11 +37,11 @@ Go [back to home page](../../index.html)
 <a name="overview"></a>Programming Challenge
 ---------------------------------------
 
-- [Programming Challenge](./programmingChallenge/Maximum Valid DNA Helix.pdf)
+- [Programming Challenge](./programmingChallenge/problemStatement.pdf)
 	- Solutions:
-		- [C++](./programmingChallenge/solutions/helixsolution.cpp)
-		- [Java](./programmingChallenge/solutions/HelixSolution.java)
-		- [Python](./programmingChallenge/solutions/helixsolution.py)
+		- [C++](./programmingChallenge/solutions/pcSol_cpp.cpp)
+		- [Java](./programmingChallenge/solutions/pcSol_java.java)
+		- [Python](./programmingChallenge/solutions/pcSol_python.py)
 	- Test Cases:
         - [Case 0 input](./programmingChallenge/io/test.in.0)
         - [Case 0 output](./programmingChallenge/io/test.out.0)
@@ -87,4 +87,3 @@ Go [back to home page](../../index.html)
         - [Case 20 output](./programmingChallenge/io/test.out.20)
         - [Case 21 input](./programmingChallenge/io/test.in.21)
         - [Case 21 output](./programmingChallenge/io/test.out.21)
-	
