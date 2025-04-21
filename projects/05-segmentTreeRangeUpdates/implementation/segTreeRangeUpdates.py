@@ -13,7 +13,8 @@ class segment_tree:
             self.build(input_array, curr_vertex*2, segment_left, segment_middle)
             self.build(input_array, curr_vertex*2+1, segment_middle + 1, segment_right)
             self.tree[curr_vertex] = self.tree[curr_vertex*2] + self.tree[curr_vertex*2+1]
-       
+    
+    # when calling this, segment_left and segment_right are 0 and len(input_array)-1, the boundaries of the segment tree
     def update(self, curr_vertex, segment_left, segment_right, position, new_value):
         if segment_left == segment_right:
             self.tree[curr_vertex] = new_value
@@ -87,6 +88,14 @@ class segment_tree_assignment_and_get:
             self.build(input_array, curr_vertex*2+1, segment_middle + 1, segment_right)
             self.tree[curr_vertex] = 0
 
+    # if a vertex is marked, unmark it and mark the two below it, assigning them the same value as the current vertex
+    # push is used as get progresses down the tree
+    def push(self, vertex):
+        if self.marked[vertex]:
+            self.tree[vertex*2] = self.tree[vertex*2+1] = self.tree[vertex]
+            self.marked[vertex*2] = self.marked[vertex*2+1] = True
+            self.marked[vertex] = False
+
     def update(self, curr_vertex, segment_left, segment_right, left, right, num_to_assign):
         if left > right:
             return
@@ -97,17 +106,10 @@ class segment_tree_assignment_and_get:
             self.marked[curr_vertex] = True
         # continue down the tree, some of this segment is outside the update range
         else:
+            self.push(curr_vertex)
             segment_middle = (segment_left + segment_right) // 2
             self.update(curr_vertex * 2, segment_left, segment_middle, left, min(right, segment_middle), num_to_assign)
             self.update(curr_vertex * 2 + 1, segment_middle + 1, segment_right, max(left, segment_middle+1), right, num_to_assign)
-
-    # if a vertex is marked, unmark it and mark the two below it, assigning them the same value as the current vertex
-    # push is used as get progresses down the tree
-    def push(self, vertex):
-        if self.marked[vertex]:
-            self.tree[vertex*2] = self.tree[vertex*2+1] = self.tree[vertex]
-            self.marked[vertex*2] = self.marked[vertex*2+1] = True
-            self.marked[vertex] = False
 
     # go down the tree updating segments as necessary
     def get(self, curr_vertex, segment_left, segment_right, position):
@@ -200,32 +202,31 @@ for test_num in range(1,4):
         input_list = list(map(int, input.readline().strip().split()))
 
         # create segment tree based on V, given by input file
-        match V:
-            case 1:
-                seg_tree = segment_tree_addition_and_get(input_list)
-            case 2: 
-                seg_tree = segment_tree_assignment_and_get(input_list)
-            case 3:
-                seg_tree = segment_tree_addition_and_max(input_list)
+        if V == 1:
+            seg_tree = segment_tree_addition_and_get(input_list)
+        elif V == 2: 
+            seg_tree = segment_tree_assignment_and_get(input_list)
+        elif V == 3:
+            seg_tree = segment_tree_addition_and_max(input_list)
 
 
         for q in range(Q):
             line = input.readline().strip().split()
             # based on command, perform get, update, or max
-            match(line[0]):
-                # get
-                case "GET":
-                    res = seg_tree.get(1, 0, N-1, int(line[1]))
-                    expected = expected_output.readline().strip()
-                    print(f"Got value {res} (Expected: {expected}))")
-                    assert(res == int(expected))
-                # update
-                case "UPDATE":
-                    print(f"Updating range {line[1]}-{line[2]} with value {line[2]}")
-                    seg_tree.update(1, 0, N-1, int(line[1]), int(line[2]), int(line[3]))
-                # max
-                case "MAX":
-                    res = seg_tree.query(1, 0, N-1, int(line[1]), int(line[2]))
-                    expected = expected_output.readline().strip()
-                    print(f"Got value {res} (Expected: {expected}))")
-                    assert(res == int(expected))
+            command = line[0]
+            # get
+            if command == "GET":
+                res = seg_tree.get(1, 0, N-1, int(line[1]))
+                expected = expected_output.readline().strip()
+                print(f"Got value {res} (Expected: {expected}))")
+                assert(res == int(expected))
+            # update
+            elif command == "UPDATE":
+                print(f"Updating range {line[1]}-{line[2]} with value {line[2]}")
+                seg_tree.update(1, 0, N-1, int(line[1]), int(line[2]), int(line[3]))
+            # max
+            elif command == "MAX":
+                res = seg_tree.query(1, 0, N-1, int(line[1]), int(line[2]))
+                expected = expected_output.readline().strip()
+                print(f"Got value {res} (Expected: {expected}))")
+                assert(res == int(expected))
