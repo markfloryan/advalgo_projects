@@ -25,8 +25,8 @@ Go [back to home page](../../index.html)
 <a name="overview"></a>Slides
 ---------------------------------------
 
-- [Instructional Slides](./slides/lecture_coinChange.pptx)
-- [Presentation Slides](./slides/presentation_coinChange.pptx)
+- [Instructional Slides](./slides/lecture_segTreeRangeUpdates.pptx)
+- [Presentation Slides](./slides/presentation_segTreeRangeUpdates.pptx)
 
 
 <a name="overview"></a>Programming Challenge

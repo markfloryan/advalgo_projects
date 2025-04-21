@@ -1,6 +1,6 @@
 # Project 01 - Primality Tests
 
-Go [back to home page](../index.md)
+Go [back to home page](../../index.html)
 
 ## Executive Summary
 
@@ -22,8 +22,8 @@ Go [back to home page](../index.md)
 
 ## Slides
 
-- [Instructional Slides](./slides/lecture_primalityTests.pdf)
-- [Presentation Slides](./slides/presentation_primalityTests.pdf)
+- [Instructional Slides](./slides/lecture_primalityTests.pptx)
+- [Presentation Slides](./slides/presentation_primalityTests.pptx)
 
 ## Programming Challenge
 
