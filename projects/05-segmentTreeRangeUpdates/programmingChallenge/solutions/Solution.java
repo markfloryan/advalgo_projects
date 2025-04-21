@@ -12,7 +12,6 @@ public class Solution {
             this.r = right;
         }
     }
-
     class SegTreeAdditionAndGet {
         Node root;
 
@@ -179,6 +178,11 @@ public class Solution {
                 }
 
                 // Construct segment trees
+                /* the problem with using one segment tree is that naively updating the values of the GCD segment tree is log-linear time 
+                   we take advantage of the property that GCD(a, b) == GCD(a, a-b) to store the GCDs of the differences
+                   this is advantageous because to update the GCDs of a range, we only need to update the boundaries, as the rest of the differences are unchanged
+                   also, we already have a segment tree that can do range updates in logarithmic time if it's just addition
+                   so: one segment tree handles a and the other one handles a-b in GCD(a, a-b), which is equivalent to GCD(a, b) */
                 SegTreeAdditionAndGet addSegTree = new SegTreeAdditionAndGet(a);
                 SegTreeGCD gcdSegTree = new SegTreeGCD(diffA);
 
