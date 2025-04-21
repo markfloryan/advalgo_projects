@@ -252,8 +252,6 @@ int main() {
                 gcd_segtree.update(gcd_segtree.root, l-1, x);
                 // SUBTRACT x from the right boundary
                 gcd_segtree.update(gcd_segtree.root, r, -x);
-                for i in range(l, r+1):
-
             }
         }
 
