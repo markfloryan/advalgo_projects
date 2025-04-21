@@ -12,20 +12,20 @@ Go [back to home page](../../index.html)
 ---------------------------------------
 
 - Implementations:
-	- [C++](./implementations/manachersAlgorithm.cpp)
-	- [Java](./implementations/manachersAlgorithm.java)
-	- [Python](./implementations/manachersAlgorithm.py)
+	- [C++](./implementation/manachersAlgorithm.cpp)
+	- [Java](./implementation/manachersAlgorithm.java)
+	- [Python](./implementation/manachersAlgorithm.py)
 	- io
-		- [test input 1](./implementations/io/sample.in.1)
-		- [test output 1](./implementations/io/sample.out.1)
-		- [test input 2](./implementations/io/sample.in.2)
-		- [test output 2](./implementations/io/sample.out.2)
-		- [test input 3](./implementations/io/sample.in.3)
-		- [test output 3](./implementations/io/sample.out.3)
-        - [test input 4](./implementations/io/sample.in.4)
-		- [test output 4](./implementations/io/sample.out.4)
-        - [test input 5](./implementations/io/sample.in.5)
-		- [test output 5](./implementations/io/sample.out.5)
+		- [test input 1](./implementation/io/sample.in.1)
+		- [test output 1](./implementation/io/sample.out.1)
+		- [test input 2](./implementation/io/sample.in.2)
+		- [test output 2](./implementation/io/sample.out.2)
+		- [test input 3](./implementation/io/sample.in.3)
+		- [test output 3](./implementation/io/sample.out.3)
+        - [test input 4](./implementation/io/sample.in.4)
+		- [test output 4](./implementation/io/sample.out.4)
+        - [test input 5](./implementation/io/sample.in.5)
+		- [test output 5](./implementation/io/sample.out.5)
 
 <a name="overview"></a>Slides
 ---------------------------------------

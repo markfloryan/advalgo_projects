@@ -1,11 +1,10 @@
-package solutions;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 //main idea: Normally, manacher's algo can guarantee that the left half of a palindrome is the same as the right half of a palindrome (after the palindrome is checked at a given center). The values on the right half of the center are also at least as much as either the min(right bound (current value to the right bound) or the left half's corresponding value). However, an issue arises with the center value when performing a matching palindrome instead of a normal one. Manacher's algo can guarantee that the left side of the array matches with the right side at a given center. However, the center value of the current is not fully checked in this scenario and some issues may arise that normally don't happen.
 
 // The center may be a part of some other palindrome from the left side, and it may be a match with the corresponding values from left half's palindromes (with respect to each left half's palindromes center) , however, it MUST match with the corresponding values in right hand sided palindromes in order to use the saved results from the left side, and this may not always happen. So, at an index i, and a center c, you must check if the value at 2i - c(corresponding letter in palindrome with index in the center of the palindrome) matches with the value at center c. If it does, you may fully use the saved value, but if it doesn't and if the saved value exceeds 2i-c, you can only use 2i - c- 1 of the saved value as every value before the corresponding value of the center is guaranteed to match, but the center's corresponding value does not. 
-public class HelixSolution {
+public class pcSol_java {
     // checks if two characters are a match
     private static boolean matches(char a, char b) {
         switch (a) {
