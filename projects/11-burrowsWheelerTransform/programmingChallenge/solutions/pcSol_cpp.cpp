@@ -12,16 +12,18 @@ const ll LINF = LLONG_MAX - 1;
 pair<vector<int>, map<int, int>> rankBwt(vector<int> &bw)
 {
     /*
-     * Given BWT array bw, return parallel list of B-ranks.
-     * Also returns tots: map from value to # times it appears.
+     * Given a BWT-transformed array bw, construct:
+     * 1. ranks: for each character, how many times it has appeared so far.
+     * 2. tots: the total count of each character in the array.
+     * This data is essential for reversing the BWT later using LF-mapping.
      */
     map<int, int> tots;
     vector<int> ranks;
 
     for (int val : bw)
     {
-        ranks.push_back(tots[val]);
-        tots[val]++;
+        ranks.push_back(tots[val]); // assign the current count as rank
+        tots[val]++;                // update the total count for the value
     }
     return {ranks, tots};
 }
@@ -29,14 +31,15 @@ pair<vector<int>, map<int, int>> rankBwt(vector<int> &bw)
 map<int, pair<int, int>> firstCol(map<int, int> &tots)
 {
     /*
-     * Return map from value to the range of rows prefixed by that value
+     * Given a frequency map tots of character counts,
+     * compute the range of row indices (in the first column of the BWT matrix) that each character occupies. This helps simulate sorting without building the full matrix explicitly.
      */
     map<int, pair<int, int>> first;
     int totc = 0;
     for (const auto &[val, count] : tots)
     {
-        first[val] = {totc, totc + count};
-        totc += count;
+        first[val] = {totc, totc + count}; // assign start and end index range
+        totc += count;                     // increment total character count seen so far
     }
     return first;
 }
@@ -44,22 +47,23 @@ map<int, pair<int, int>> firstCol(map<int, int> &tots)
 vector<int> reverseBwt(vector<int> &bw)
 {
     /*
-     * Make original list from BWT list bw
+     * Reverse the Burrows-Wheeler Transform using LF-mapping
+     * Start from the row with sentinel (-1), and repeatedly map backwards through the BWT matrix until the original string is rebuilt in reverse.
      */
     pair<vector<int>, map<int, int>> rt = rankBwt(bw);
     vector<int> ranks = rt.first;
     map<int, int> tots = rt.second;
     map<int, pair<int, int>> first = firstCol(tots);
-    int rowi = 0;
+    int rowi = 0; // start at row 0 where sentinel is assumed to be
     int sentinel = -1;
-    vector<int> t = {-1};
+    vector<int> t = {-1}; // initialize the output with the sentinel
     while (bw[rowi] != sentinel)
     {
         int c = bw[rowi];
-        t.push_back(c);
-        rowi = first[c].first + ranks[rowi];
+        t.push_back(c);                      // add character to result
+        rowi = first[c].first + ranks[rowi]; // jump to previous row using LF-mapping
     }
-    reverse(t.begin(), t.end());
+    reverse(t.begin(), t.end()); // reverse to restore original order
     return t;
 }
 
@@ -70,14 +74,14 @@ void solve()
     vector<int> arr(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> arr[i];
+        cin >> arr[i]; // input the BWT-transformed array
     }
     set<int> elements;
     for (int i = 0; i + 1 < n; i++)
     {
         if (arr[i] > 0)
         {
-            elements.insert(arr[i]);
+            elements.insert(arr[i]); // collect all nonzero characters (excluding sentinel and placeholder)
         }
     }
     int last = 0;
@@ -108,20 +112,19 @@ void solve()
     }
     int zero = find(arr.begin(), arr.end(), 0) - arr.begin();
     /*
-     * Test each gap
-     * If the element works, then we add to our answer the number of elements in
-     * that gap, as all elements will work if one element works
+     * For each candidate value range in gaps:
+     * Replace the zero with a trial value and try to reverse the BWT.
+     * If the reverse operation succeeds (i.e., length matches), add the full gap size to answer.
      */
     int ans = 0;
     for (pair<int, int> item : gaps)
     {
-        // cout << item.first << " " << item.second << endln;
         arr[zero] = item.first;
         vector<int> original = reverseBwt(arr);
         if (original.size() == arr.size())
         {
             // the original array is valid if there are no missing elements
-            ans += item.second - item.first + 1;
+            ans += item.second - item.first + 1; // all values in this range are valid
         }
     }
     print(ans);
