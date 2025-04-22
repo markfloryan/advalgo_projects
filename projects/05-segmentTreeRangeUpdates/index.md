@@ -3,7 +3,6 @@ Project 05 - Segment Tree Range Updates
 
 Go [back to home page](../../index.html)
 
-
 <a name="overview"></a>Executive Summary
 ---------------------------------------
 
