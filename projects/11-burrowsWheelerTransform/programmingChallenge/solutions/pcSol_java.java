@@ -3,52 +3,59 @@ import java.util.*;
 public class pcSol_java {
     public static List<Integer> rankBwt(List<Integer> bw, Map<Integer, Integer> tots) {
         /*
-         * Given BWT array bw, return parallel list of B-ranks.
-         * Also returns tots: map from value to # times it appears.
+         * Given a BWT-transformed array bw, construct:
+         * 1. ranks: for each character, how many times it has appeared so far.
+         * 2. tots: the total count of each character in the array.
+         * This data is essential for reversing the BWT later using LF-mapping.
          */
         List<Integer> ranks = new ArrayList<>();
         for (int val : bw) {
             tots.putIfAbsent(val, 0);
-            ranks.add(tots.get(val));
-            tots.put(val, tots.get(val) + 1);
+            ranks.add(tots.get(val)); // assign the current count as rank
+            tots.put(val, tots.get(val) + 1); // update the total count for the value
         }
         return ranks;
     }
 
     public static Map<Integer, int[]> firstCol(Map<Integer, Integer> tots) {
         /*
-         * Return map from value to the range of rows prefixed by that value
+         * Given a frequency map tots of character counts,
+         * compute the range of row indices (in the first column of the BWT matrix) that
+         * each character occupies. This helps simulate sorting without building the
+         * full matrix explicitly.
          */
         Map<Integer, int[]> first = new TreeMap<>();
         int totc = 0;
         for (int val : new TreeSet<>(tots.keySet())) {
             int count = tots.get(val);
-            first.put(val, new int[] { totc, totc + count });
-            totc += count;
+            first.put(val, new int[] { totc, totc + count });// assign start and end index range
+            totc += count; // increment total character count seen so far
         }
         return first;
     }
 
     public static List<Integer> reverseBwt(List<Integer> bw) {
         /*
-         * Make original list from BWT list bw
+         * Reverse the Burrows-Wheeler Transform using LF-mapping
+         * Start from the row with sentinel (-1), and repeatedly map backwards through
+         * the BWT matrix until the original string is rebuilt in reverse.
          */
         Map<Integer, Integer> tots = new HashMap<>();
         List<Integer> ranks = rankBwt(bw, tots);
         Map<Integer, int[]> first = firstCol(tots);
 
-        int rowi = 0;
+        int rowi = 0; // start at row 0 where sentinel is assumed to be
         int sentinel = -1;
-        List<Integer> t = new ArrayList<>();
+        List<Integer> t = new ArrayList<>(); // initialize the output with the sentinel
         t.add(sentinel);
 
         while (!bw.get(rowi).equals(sentinel)) {
             int c = bw.get(rowi);
-            t.add(c);
-            rowi = first.get(c)[0] + ranks.get(rowi);
+            t.add(c); // add character to result
+            rowi = first.get(c)[0] + ranks.get(rowi); // jump to previous row using LF-mapping
         }
 
-        Collections.reverse(t);
+        Collections.reverse(t); // reverse to restore original order
         return t;
     }
 
@@ -58,7 +65,7 @@ public class pcSol_java {
         int n = sc.nextInt(), k = sc.nextInt();
         List<Integer> arr = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            arr.add(sc.nextInt());
+            arr.add(sc.nextInt()); // input the BWT-transformed array
         }
 
         List<Integer> elements = new ArrayList<>(arr);
@@ -90,17 +97,17 @@ public class pcSol_java {
 
         int zero = arr.indexOf(0);
         int ans = 0;
-
         /*
-         * Test each gap
-         * If the element works, then we add to our answer the number of elements in
-         * that gap, as all elements will work if one element works
+         * For each candidate value range in gaps:
+         * Replace the zero with a trial value and try to reverse the BWT.
+         * If the reverse operation succeeds (i.e., length matches), add the full gap
+         * size to answer.
          */
         for (int[] item : gaps) {
             arr.set(zero, item[0]);
             List<Integer> original = reverseBwt(arr);
             if (original.size() == arr.size()) { // # the original array is valid if there are no missing elements
-                ans += item[1] - item[0] + 1;
+                ans += item[1] - item[0] + 1; // all values in this range are valid
             }
         }
 

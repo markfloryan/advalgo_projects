@@ -1,37 +1,47 @@
 from itertools import permutations
 
 def rankBwt(bw):
-    ''' Given BWT array bw, return parallel list of B-ranks.
-        Also returns tots: map from value to # times it appears. '''
+    '''      
+    * Given a BWT-transformed array bw, construct:
+     * 1. ranks: for each character, how many times it has appeared so far.
+     * 2. tots: the total count of each character in the array.
+     * This data is essential for reversing the BWT later using LF-mapping. 
+     '''
     tots = dict()
     ranks = []
     for val in bw:
         if val not in tots:
             tots[val] = 0
-        ranks.append(tots[val])
-        tots[val] += 1
+        ranks.append(tots[val]) # assign the current count as rankß
+        tots[val] += 1 # update the total count for the value
     return ranks, tots
 
 def firstCol(tots):
-    ''' Return map from value to the range of rows prefixed by that value '''
+    ''' 
+    * Given a frequency map tots of character counts,
+     * compute the range of row indices (in the first column of the BWT matrix) that each character occupies. This helps simulate sorting without building the full matrix explicitly.
+     '''
     first = {}
     totc = 0
     for val, count in sorted(tots.items()):
-        first[val] = (totc, totc + count)
-        totc += count
+        first[val] = (totc, totc + count) # assign start and end index range
+        totc += count # increment total character count seen so far
     return first
 
 def reverseBwt(bw):
-    ''' Make original list from BWT list bw '''
+    '''     
+    * Reverse the Burrows-Wheeler Transform using LF-mapping
+     * Start from the row with sentinel (-1), and repeatedly map backwards through the BWT matrix until the original string is rebuilt in reverse.
+     '''
     ranks, tots = rankBwt(bw)
     first = firstCol(tots)
-    rowi = 0
+    rowi = 0 #  start at row 0 where sentinel is assumed to be
     sentinel = -1
-    t = [sentinel]
+    t = [sentinel] # initialize the output with the sentinel
     while bw[rowi] != sentinel:
         c = bw[rowi]
-        t.append(c) # Prepend to result
-        rowi = first[c][0] + ranks[rowi]
+        t.append(c) # add character to result
+        rowi = first[c][0] + ranks[rowi] # jump to previous row using LF-mapping
     t = t[::-1]
     return t
 
@@ -58,8 +68,9 @@ for i in range(2, n): # also make sure to check the elements in the actual array
 zero = arr.index(0)
 ans =0
 """
-Test each gap
-If the element works, then we add to our answer the number of elements in that gap, as all elements will work if one element works
+     * For each candidate value range in gaps:
+     * Replace the zero with a trial value and try to reverse the BWT.
+     * If the reverse operation succeeds (i.e., length matches), add the full gap size to answer.
 """
 for item in gaps:
     arr[zero] = item[0]
