@@ -7,9 +7,9 @@ Go [back to home page](../../index.html)
 
 ## Implementation
 - Implementations:
-  - [C++](./implementation/Treap.cpp)
-  - [Java](./implementation/Treap.java)
-  - [Python](./implementation/Treap.py)
+  - [C++](./Implementation/Treap.cpp)
+  - [Java](./Implementation/Treap.java)
+  - [Python](./Implementation/Treap.py)
   - io
     - [sample input 1](./Implementation/io/sample.in.1)
     - [sample output 1](./Implementation/io/sample.out.1)
