@@ -1,4 +1,4 @@
-# Project 05 - Treaps
+# Project 07 - Treaps
 
 Go [back to home page](../../index.html)
 
