@@ -19,8 +19,8 @@ Go [back to home page](../../index.html)
     - [sample output 3](./Implementation/io/sample.out.3)
 
 ## Slides
-- [Instructional Slides](./slides/lecture_Treap.pdf)
-- [Presentation Slides](./slides/presentation_Treap.pdf)
+- [Instructional Slides](./slides/lecture_Treap.pptx)
+- [Presentation Slides](./slides/presentation_Treap.pptx)
 
 ## Programming Challenge
 - [Programming Challenge](./programmingChallenge/problemStatement.pdf)
