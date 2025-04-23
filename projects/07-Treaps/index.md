@@ -11,12 +11,12 @@ Go [back to home page](../../index.html)
   - [Java](./implementation/Treap.java)
   - [Python](./implementation/Treap.py)
   - io
-    - [test input 1](./implementation/io/sample.in.1)
-    - [test output 1](./implementation/io/sample.out.1)
-    - [test input 2](./implementation/io/sample.in.2)
-    - [test output 2](./implementation/io/sample.out.2)
-    - [test input 3](./implementation/io/sample.in.3)
-    - [test output 3](./implementation/io/sample.out.3)
+    - [sample input 1](./Implementation/io/sample.in.1)
+    - [sample output 1](./Implementation/io/sample.out.1)
+    - [sample input 2](./Implementation/io/sample.in.2)
+    - [sample output 2](./Implementation/io/sample.out.2)
+    - [sample input 3](./Implementation/io/sample.in.3)
+    - [sample output 3](./Implementation/io/sample.out.3)
 
 ## Slides
 - [Instructional Slides](./slides/lecture_Treap.pdf)
