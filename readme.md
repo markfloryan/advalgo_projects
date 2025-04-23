@@ -37,6 +37,12 @@ The link above summarizes how to submit your project. Please read those instruct
 - [04 - Manacher's Algorithm](./projects/04-ManachersAlgorithm/index.html)
 - [05 - Segment Tree Range Updates](./projects/05-segmentTreeRangeUpdates/index.html)
 
+- [06 - Persistent Segment Trees](./projects/06-PersistentSegmentTrees/index.html)
+- [07 - Treaps](./projects/07-Treaps/index.html)
+- [08 - Bloom Filter](./projects/08-bloomFilter/index.html)
+- [09 - Hyper Log Log](./projects/09-hyperLogLog/index.html)
+- [10 - Aho Corasick Algorithm](./projects/10-AhoCorasickAlgorithm/index.html)
+
 <a name="projects"></a>Grading Rubric
 ------------------------------------------
 

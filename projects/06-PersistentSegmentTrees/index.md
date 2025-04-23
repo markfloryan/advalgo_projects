@@ -32,7 +32,7 @@ Go [back to home page](../../index.html)
 ---------------------------------------
 
 - [Instructional Slides](./Slides/persistentSegTrees.pptx)
-- [Presentation Slides](./Slides/persistentSegTreesPresentation.pptx)
+- [Presentation Slides](./Slides/persistentSegTreesPresentaion.pptx)
 
 
 <a name="overview"></a>Programming Challenge
