@@ -14,8 +14,8 @@
 \usepackage{nicematrix}
 \usepackage{subcaption}
 
+\usepackage[frozencache=false]{minted}
 
-\usepackage[frozencache,cachedir=.]{minted}
 
 \usepackage{tcolorbox}
 \usepackage[framemethod=tikz]{mdframed}
@@ -124,7 +124,7 @@ Formally, a \textbf{Persistent Segment Tree} is a data structure that extends th
 
 \section{Background}\label{section:background}
 
-\subsection{Segment Tree Recap}
+\subsection*{Segment Tree Recap}
 
 A Segment Tree is a binary tree structure built over an array $A$. Each node in the tree corresponds to a specific range $[l, r]$ of indices in the original array and typically stores the precomputed value of the function $f$ over the subsegment $A[l \ldots r]$. We define the Segment Tree $\mathcal{T}$ recursively as follows:
 
@@ -174,6 +174,14 @@ The function $f$ determines how two child nodes are combined. For example, in th
     \caption{Segment Tree for $A = [1, 3, -2, 8, -7]$ with sum aggregation. Each node stores the range $[l, r]$ and the corresponding aggregated value, which is the sum of the values in that range. The root node represents the entire array, while the leaf nodes represent individual elements. The internal nodes represent the sum of their respective child nodes.}
     \label{fig:segment_tree_example}
 \end{figure}
+
+A standard segment tree supports the following operations:
+\begin{itemize}
+    \item \textbf{Build (Algorithm~\ref{alg:build}):} Constructs the Segment Tree in $O(n)$ time.
+    \item \textbf{Range Query (Algorithm~\ref{alg:query}):} Computes $f(l, r)$ in $O(\log n)$ time.
+    \item \textbf{Point Update (Algorithm~\ref{alg:update}):} Updates the value at index $i$ in $O(\log n)$ time.
+\end{itemize}
+
 
 \section{Approach}\label{section:approach}
 
@@ -259,18 +267,18 @@ This design makes the Persistent Segment Tree a powerful tool for problems that 
 
 \section{Implementation}\label{section:implementation}
 
+We showcase the full solution in Python (\ref{section:python_implementation}) in the appendix, and we also have Java and C++ implementations available in the GitHub repository.
+
 Given an array $A = [a_1, a_2, \dots, a_n]$, we first build a standard Segment Tree $\mathcal{T}_0$ in $O(n)$ time. We also need to initialize a list of roots $\mathcal{R} = [\mathcal{T}_0]$ to store the roots of all versions.
 
-\subsection{Persistent Update Algorithm}
+\subsection*{Persistent Update Algorithm}
 
 Let $\texttt{Node}$ represent a node in the Segment Tree, containing:
 \begin{itemize}
     \item \texttt{val}: the aggregate value over the range $[l, r]$,
     \item \texttt{left}, \texttt{right}: pointers to the left and right child nodes.
 \end{itemize}
-
 Let $f : V \times V \to V$ be an associative \emph{merge function} (e.g., sum, min, max) used to combine the results from the left and right subtrees.
-
 We define the update procedure $\texttt{update}(\texttt{node},\ l,\ r,\ p,\ v)$, where:
 \begin{itemize}
     \item \texttt{node} is the root of the current version,
@@ -278,47 +286,43 @@ We define the update procedure $\texttt{update}(\texttt{node},\ l,\ r,\ p,\ v)$,
     \item $p$ is the index to update,
     \item $v$ is the new value to assign at index $p$.
 \end{itemize}
+We demonstrate the update algorithm in Algorithm~\ref{alg:persistent_update}.
 
-\vspace{0.5em}
-\noindent The function returns a new root node for the updated version. The update is defined recursively as follows:
+\begin{algorithm}[H]
+    \caption{Persistent Segment Tree Update}
+    \begin{algorithmic}[1]
+        \Function{Update}{node, $l$, $r$, $p$, $v$}
+        \If{$l = r = p$}
+        \State \Return \Call{Node}{$v$, \textbf{None}, \textbf{None}}
+        \EndIf
+        \State $m \gets \lfloor (l + r) / 2 \rfloor$
+        \If{$p \le m$}
+        \State $\texttt{left} \gets$ \Call{Update}{$\texttt{node.left},\ l,\ m,\ p,\ v$}
+        \State $\texttt{right} \gets \texttt{node.right}$
+        \Else
+        \State $\texttt{left} \gets \texttt{node.left}$
+        \State $\texttt{right} \gets$ \Call{Update}{$\texttt{node.right},\ m+1,\ r,\ p,\ v$}
+        \EndIf
+        \State \Return \Call{Node}{$f(\texttt{left.val},\ \texttt{right.val})$, $\texttt{left}$, $\texttt{right}$}
+        \EndFunction
+    \end{algorithmic}
+    \label{alg:persistent_update}
+\end{algorithm}
 
-\begin{itemize}
-    \item \textbf{Base Case:} If $l = r = p$, then we have reached the leaf node to be updated. Return a new node:
-          \[
-              \texttt{Node}(v,\ \texttt{None},\ \texttt{None})
-          \]
+As demonstrated in Algorithm~\ref{alg:persistent_update}, the update function that operates on $\mathcal{T}_t$ eventually returns the new root node of the updated version $\mathcal{T}_{t+1}$. We then simply apppend this new root to the list of roots $\mathcal{R}$, so that we can access it later.
 
-    \item \textbf{Recursive Case:} Otherwise, let $m = \left\lfloor \frac{l + r}{2} \right\rfloor$.
+The update procedure has a worst-case time and space complexity of $\Theta(\log n)$ per operation. This is because the algorithm only creates new nodes along the path from the root to the target leaf node during an update, and the height of the balanced Segment Tree is $O(\log n)$. Every recursive call in this path results in the creation of one new node, while all other parts of the tree are reused through structural sharing. Thus, the number of nodes created is exactly proportional to the depth of the tree, which is $\Theta(\log n)$ in the best, worst, and average cases. The use of persistent data structures here avoids full copying and enables access to any prior version in constant time via stored root pointers, without compromising the logarithmic efficiency of updates or queries.
 
-          \begin{itemize}
-              \item If $p \le m$, we update the left subtree:
-                    \[
-                        \texttt{left} \gets \texttt{update}(\texttt{node.left},\ l,\ m,\ p,\ v), \quad \texttt{right} \gets \texttt{node.right}
-                    \]
-              \item If $p > m$, we update the right subtree:
-                    \[
-                        \texttt{left} \gets \texttt{node.left}, \quad \texttt{right} \gets \texttt{update}(\texttt{node.right},\ m+1,\ r,\ p,\ v)
-                    \]
-          \end{itemize}
+\subsection*{Range Query and Version Access}
 
-          Return a new internal node combining the updated child and the reused child:
-          \[
-              \texttt{Node}\left(f(\texttt{left.val},\ \texttt{right.val}),\ \texttt{left},\ \texttt{right}\right)
-          \]
-\end{itemize}
-
-\vspace{0.5em}
-\noindent\textbf{Time and Space Complexity:} Each call to $\texttt{update}$ creates $O(\log n)$ new nodes, one per level along the path from the root to the updated leaf. Thus, each update runs in $O(\log n)$ time and uses $O(\log n)$ space.
-
-\subsection{Range Query and Version Access}
-
-To query any version $\mathcal{T}_k$, we simply pass its root into the standard Segment Tree range query function. Since version roots are stored externally, accessing a particular version takes $O(1)$ time, and the query itself runs in $O(\log n)$ time as usual.
+To query any version $\mathcal{T}_k$, we simply pass its root into the standard Segment Tree range query function. Since version roots are stored externally, accessing a particular version takes $O(1)$ time (assuming that we query the $i^{th}$ version/edit), and the query itself runs in $O(\log n)$ time as usual.
 
 \section{Summary of Programming Challenge}
 
-\textbf{Desks of Eternity} is a versioned data structure challenge where students implement a system to track dynamic updates to an array while maintaining full historical access to any prior state. The learning objective is to teach students how to apply persistent data structures—in this case, a persistent segment tree—to support efficient point updates and range queries across multiple versions of data.
+ChronoCorp, the world's most valuable tech company, utilizes its innovative Desk Matrix™ system to track employee identities and their evaluation scores across different versions as they move between desks, departments, or rejoin the company. The system records every change, creating a history of who worked at each desk and their corresponding evaluations. The input describes the initial employee evaluation scores for each desk and a series of commands. These commands include swapping employees between two desks (S), replacing an employee at a specific desk with a new one and a new score (R), replacing an employee at a desk with the highest-scoring employee who ever occupied that desk (P), and querying a range of desks for the sum of employee evaluations in two specified versions of the desk matrix (Q). For each query, the output should be the absolute difference between the sums of the evaluation scores in the given range for the two specified versions. The swap, replacement, and perfect commands do not produce any output.
 
-The key twist in the assignment is handling not just value updates (replacements), but also \textbf{nontrivial operations like swaps and max-history-based replacements} (``perfect''), while keeping the structure efficiently queryable across versions. This goes beyond basic persistent trees by requiring students to design a strategy to manage \textbf{shared structure with non-monotonic changes}, making it both a data structures and systems design exercise.
+
+The key twist in the assignment is handling not just value updates (replacements), but also \textbf{nontrivial operations like swaps and max-history-based replacements} (``perfect''), while keeping the structure efficiently queryable across versions. This goes beyond basic persistent trees by requiring students to design a strategy to manage shared structure with non-monotonic changes.
 
 \subsection*{Key Ideas for Solving Programming Challenge}
 
@@ -336,81 +340,73 @@ We discuss the implementation of a Persistent Segment Tree, a powerful data stru
 
 We also designed a programming challenge, ``Desks of Eternity,'' to reinforce the concepts of persistent data structures and their applications in real-world scenarios. The challenge requires students to implement a system that tracks dynamic updates to an array while maintaining full historical access to any prior state, using a Persistent Segment Tree.
 
+\newpage
+\appendix
+\section{Standard Segment Tree Operations}
 
-% \begin{pbox}[label={ex:fm_standalone}]{Standalone Flow Matching code \\ \url{flow_matching/examples/standalone_flow_matching.ipynb}}
-%     \inputminted{python}{assets/demo.py}
-%     \vspace{0.5cm}
-%     \includegraphics[width=\textwidth]{assets/half_moons.png}
-% \end{pbox}
+\begin{algorithm}[H]
+    \caption{Segment Tree Build}
+    \begin{algorithmic}[1]
+        \Function{Build}{$\textit{node},\ l,\ r$}
+        \If{$l = r$}
+        \State $\textit{tree[node]} \gets A[l]$
+        \State \Return
+        \EndIf
+        \State $m \gets \lfloor (l + r) / 2 \rfloor$
+        \State \Call{Build}{$2 \cdot \textit{node},\ l,\ m$}
+        \State \Call{Build}{$2 \cdot \textit{node} + 1,\ m + 1,\ r$}
+        \State $\textit{tree[node]} \gets f(\textit{tree}[2 \cdot \textit{node}],\ \textit{tree}[2 \cdot \textit{node} + 1])$
+        \EndFunction
+    \end{algorithmic}
+    \label{alg:build}
+\end{algorithm}
+
+\begin{algorithm}[H]
+    \caption{Segment Tree Range Query}
+    \begin{algorithmic}[1]
+        \Function{Query}{$\textit{node},\ l,\ r,\ ql,\ qr$}
+        \If{$qr < l$ or $ql > r$}
+        \State \Return $0$ \Comment{Out of range}
+        \EndIf
+        \If{$ql \le l$ and $r \le qr$}
+        \State \Return $\textit{tree[node]}$ \Comment{Fully within range}
+        \EndIf
+        \State $m \gets \lfloor (l + r) / 2 \rfloor$
+        \State $x \gets$ \Call{Query}{$2 \cdot \textit{node},\ l,\ m,\ ql,\ qr$}
+        \State $y \gets$ \Call{Query}{$2 \cdot \textit{node} + 1,\ m+1,\ r,\ ql,\ qr$}
+        \State \Return $f(x,\ y)$
+        \EndFunction
+    \end{algorithmic}
+    \label{alg:query}
+\end{algorithm}
+
+\begin{algorithm}[H]
+    \caption{Segment Tree Point Update}
+    \begin{algorithmic}[1]
+        \Function{Update}{$\textit{node},\ l,\ r,\ i,\ v$}
+        \If{$l = r = i$}
+        \State $\textit{tree[node]} \gets v$
+        \State \Return
+        \EndIf
+        \State $m \gets \lfloor (l + r) / 2 \rfloor$
+        \If{$i \le m$}
+        \State \Call{Update}{$2 \cdot \textit{node},\ l,\ m,\ i,\ v$}
+        \Else
+        \State \Call{Update}{$2 \cdot \textit{node} + 1,\ m+1,\ r,\ i,\ v$}
+        \EndIf
+        \State $\textit{tree[node]} \gets f(\textit{tree}[2 \cdot \textit{node}],\ \textit{tree}[2 \cdot \textit{node} + 1])$
+        \EndFunction
+    \end{algorithmic}
+    \label{alg:update}
+\end{algorithm}
+
+\nopagebreak
+
+\section{Python Implementation of Persistent Segment Tree}\label{section:python_implementation}
+\begin{pbox}[label={ex:fm_standalone}]{Python Implementation of Persistent Segment Tree}
+    \inputminted{python}{assets/pst.py}
+\end{pbox}
 
 \appendix
-\newpage
-
-% \section{Python Implementation of Persistent Segment Tree}\label{sec:python_implementation}
-% \begin{pbox}[label={ex:euler_method}]{Python Implementation of Persistent Segment Tree}
-%     \begin{minted}[linenos, breaklines, mathescape, fontsize=\footnotesize, xleftmargin=2em]{python}
-% class Node:
-%     def __init__(self, value=0, left=None, right=None):
-%         self.value = value
-%         self.leftChild = left
-%         self.rightChild = right
-
-% class PST:
-%     MAX = 100
-
-%     def __init__(self, n):
-%         self.n = n
-%         self.version = 0
-%         self.root = [None] * self.MAX
-
-%     def construct(self, val):
-%         self.root[0] = self._construct(val, 0, self.n - 1)
-
-%     def _construct(self, val, l, r):
-%         node = Node()
-%         if l == r:
-%             node.value = val[l] if val else 0
-%             node.maximum = val[l] if val else 0
-%             return node
-%         middle = (l + r) // 2
-%         node.leftChild = self._construct(val, l, middle)
-%         node.rightChild = self._construct(val, middle + 1, r)
-%         node.value = node.leftChild.value + node.rightChild.value
-%         return node
-
-%     def _update(self, l, r, prev, idx, new_val):
-%         node = Node()
-%         if l == r:
-%             node.value = new_val
-%         else:
-%             middle = (l + r) // 2
-%             if idx <= middle:
-%                 node.leftChild = self._update(l, middle, prev.leftChild, idx, new_val)
-%                 node.rightChild = prev.rightChild
-%             else:
-%                 node.rightChild = self._update(middle + 1, r, prev.rightChild, idx, new_val)
-%                 node.leftChild = prev.leftChild
-%             node.value = node.leftChild.value + node.rightChild.value
-%         return node
-
-%     def _query(self, node, l, r, ql, qr):
-%         if l > qr or r < ql:
-%             return 0
-%         if ql <= l and qr >= r:
-%             return node.value
-%         middle = (l + r) // 2
-%         return self._query(node.leftChild, l, middle, ql, qr) + \
-%             self._query(node.rightChild, middle + 1, r, ql, qr)
-
-%     def update(self, idx, val):
-%         self.version += 1
-%         self.root[self.version] = self._update(0, self.n - 1, self.root[self.version - 1], idx, val)
-
-%     def query(self, query_version, l, r):
-%         return self._query(self.root[query_version], 0, self.n - 1, l, r)
-% \end{minted}
-% \end{pbox}
-
-% \pagebreak
 
 \end{document}
