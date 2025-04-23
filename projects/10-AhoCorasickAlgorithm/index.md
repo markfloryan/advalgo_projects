@@ -40,6 +40,7 @@ Go [back to home page](../../index.html)
 		- [Java](./programmingChallenge/solutions/solution.java)
 		- [Python](./programmingChallenge/solutions/solution.py)
 	- Test Cases:
+		- [Test Case Overview](./programmingChallenge/io/tests.md)
 		- [Case 1 input](./programmingChallenge/io/test.in.1)
 		- [Case 1 output](./programmingChallenge/io/test.out.1)
         - [Case 2 input](./programmingChallenge/io/test.in.2)
