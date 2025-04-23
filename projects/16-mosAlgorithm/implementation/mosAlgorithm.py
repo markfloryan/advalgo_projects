@@ -1,6 +1,5 @@
 import functools
 
-
 def sortWithBlockSize(r1, r2, blockSize):
     r1lb = r1[0] // blockSize
     r2lb = r2[0] // blockSize
@@ -75,9 +74,6 @@ class ModeData:
         # print(self.frequencies, self.buckets)
         for val in self.buckets[self.modeFreq - 1]:
             return (val, self.modeFreq)
-
-
-
 
 # qs = [(0, 4), (0, 6), (0, 3), (1, 4), (1, 6), (4, 9), (3, 10)]
 # arr = [8, 3, 4, 5, 3, 2, 3, 1, 3, 2, 8, 10, 11, 3, 2]
