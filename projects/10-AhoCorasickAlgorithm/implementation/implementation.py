@@ -1,6 +1,7 @@
 
 #  SOURCES CITED
 #  
+#  GeeksforGeeks, "Aho-Corasick Algorithm in Python": https://www.geeksforgeeks.org/aho-corasick-algorithm-in-python/
 #  Wikipedia, "Aho-Corasick algorithm": https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
 #  Stanford, "Aho-Corasick Automata": https://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Slides02.pdf
 #  Algorithms for Competitive Programming, "Aho-Corasick algorithm": https://cp-algorithms.com/string/aho_corasick.html
@@ -9,9 +10,10 @@
 from collections import deque
 import sys
 
-# Trie Node Object represents a "trie" or a prefix tree used to store a set of strings we
-# wish to search for (pattern). The trie will be used to build an automaton that will allow
-# us to search text efficiently for our list of patterns
+""" Trie Node represents the node of a "trie" or a prefix tree used to store a 
+    set of strings we wish to search for (pattern). The trie will be used to 
+    build an automaton that will allow us to search text efficiently for our 
+    list of patterns """
 class TrieNode:
     def __init__(self):
          # Children represent outgoing edges between nodes in a Trie. They represent 
@@ -26,24 +28,27 @@ class TrieNode:
         # currently reached at this node
         self.output = []
 
+"""The Aho-Corasick Algorithm is able to search an input string "text" for a set of
+    multiple patterns in parallel (running in linear time) by building a trie or
+    prefix tree of the given patterns. Using this, it builds a deterministic 
+    automaton using failure and output links."""
 class AhoCorasick:
-    # Initialize the Trie with an empty root Node
+    """ Constructor initialize the Trie with an empty root Node """
     def __init__(self):
         self.root = TrieNode()
 
-    # Insert a single "pattern" word into the trie.
-    # We will reuse existing edges so common prefixes 
-    # such as "EATing" and "EATery" are shared
+    """ add inserts a single "pattern" word into the trie.
+        We will reuse existing edges so common prefixes 
+        such as "EATing" and "EATery" are shared """
     def add(self, pattern: str):
         node = self.root
         for ch in pattern:
             node = node.children.setdefault(ch, TrieNode())
         node.output.append(pattern) # Mark the end of the pattern as a desired output
 
-    # Once all of the patterns are inserted, we must build the automaton using BFS
-    # tracersal to construct all of the failure links at every state, and 
-    # merge the output lists along these links
-    
+    """ Once all of the patterns are inserted, we must build the automaton using BFS
+        tracersal to construct all of the failure links at every state, and 
+        merge the output lists along these links """
     def build(self) -> None:
         # Given a Trie, we assume the Root Node has depth 0 and its final layer has depth D
         
@@ -77,8 +82,8 @@ class AhoCorasick:
                 # computed later—only after we just ensured nxt.fail is correct.
                 q.append(nxt)
 
-    # This function searches a str "text" to return all of the outputs found with their
-    # given index in the location of the text
+    """ find searches a str "text" to return all of the outputs found with their
+        given index in the location of the text """
     def find(self, text: str):
         # "node" represents the automaton once it has been built. It starts out as the
         # root node to represent the start stae - no characters have been consumed
@@ -102,8 +107,7 @@ class AhoCorasick:
             # ending here, and the index i of their locations
             if node.output:
                 yield i, node.output   
-
-
+                
 def main():
     # Read in all lines
     lines = sys.stdin.read().splitlines()
