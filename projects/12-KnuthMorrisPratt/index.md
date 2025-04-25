@@ -26,7 +26,7 @@ Go [back to home page](../../index.html)
 <a name="overview"></a>Slides
 ---------------------------------------
 
-- [Instructional Slides](./slides/lecture_coinChange.pptx)
+- [Instructional Slides](./slides/lecture_KMP.pptx)
 - [Presentation Slides](./slides/presentation_KMP.pptx)
 
 
