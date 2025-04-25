@@ -42,18 +42,22 @@ class Mo:
 class ModeData:
     def __init__(self, array):
         self.array = array
+
     def init(self):
         self.frequencies = {}
         self.buckets = [None for i in range(len(self.array))]
         self.modeFreq = 0
+
     def addToBucket(self, freq, item):
         if not self.buckets[freq - 1]:
             self.buckets[freq - 1] = set()
         self.buckets[freq - 1].add(item)
+
     def removeFromBucket(self, freq, item):
         if freq - 1 < 0:
             return
         self.buckets[freq - 1].remove(item)
+
     def add(self, idx):
         val = self.array[idx]
         if not val in self.frequencies:
@@ -63,6 +67,7 @@ class ModeData:
         self.addToBucket(self.frequencies[val], val)
         if self.modeFreq < self.frequencies[val]:
             self.modeFreq = self.frequencies[val]
+
     def remove(self, idx):
         val = self.array[idx]
         self.removeFromBucket(self.frequencies[val], val)
@@ -70,6 +75,7 @@ class ModeData:
             self.modeFreq -= 1
         self.frequencies[val] -= 1
         self.addToBucket(self.frequencies[val], val)
+
     def answer(self):
         # print(self.frequencies, self.buckets)
         for val in self.buckets[self.modeFreq - 1]:
