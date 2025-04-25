@@ -1,7 +1,7 @@
-import java.util.Arrays;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class GaleShapley {
 
@@ -93,15 +93,16 @@ public class GaleShapley {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
+        String base = "projects\\15-GaleShapley\\implementation\\io\\";
         String[] testFiles = {
-                "io/sample.in.1",
-                "io/sample.in.2",
-                "io/sample.in.3"
+                base + "sample.in.1",
+                base + "sample.in.2",
+                base + "sample.in.3"
         };
         String[] outputFiles = {
-                "io/sample.out.1",
-                "io/sample.out.2",
-                "io/sample.out.3"
+                base + "sample.out.1",
+                base + "sample.out.2",
+                base + "sample.out.3"
         };
         for (int idx = 0; idx < testFiles.length; idx++) {
             Scanner reader = new Scanner(new File(testFiles[idx]));
