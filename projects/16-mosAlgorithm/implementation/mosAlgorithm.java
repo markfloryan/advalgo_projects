@@ -152,14 +152,14 @@ public class MoAlgorithm {
             }
         }
 
-        // public static void main(String[] args) {
-        //     int[][] qs = {{0,4}, {0,6}, {0,3}, {1,4}, {1,6}, {4,9}, {3,10}};
-        //     int[] arr = {8,3,4,5,3,2,3,1,3,2,8,10,11,3,2};
-        //     ModeData data = new ModeData(arr);
-        //     Mo mo = new Mo(3, data);
-        //     int[][] res = mo.query(qs);
-        //     for (int i = 0; i < qs.length; i++) {
-        //         System.out.println(Arrays.toString(qs[i]) + " -> " + Arrays.toString(res[i]));
-        //     }
-        // }
+    public static void main(String[] args) {
+        int[][] qs = {{0,4}, {0,6}, {0,3}, {1,4}, {1,6}, {4,9}, {3,10}};
+        int[] arr = {8,3,4,5,3,2,3,1,3,2,8,10,11,3,2};
+        ModeData data = new ModeData(arr);
+        Mo mo = new Mo(3, data);
+        int[][] res = mo.query(qs);
+        for (int i = 0; i < qs.length; i++) {
+            System.out.println(Arrays.toString(qs[i]) + " -> " + Arrays.toString(res[i]));
+        }
+    }
 }
