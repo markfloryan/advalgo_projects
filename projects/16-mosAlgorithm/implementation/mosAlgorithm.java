@@ -10,11 +10,12 @@ public class MoAlgorithm {
         int[] answer();
     }
 
+    // get the block of the left index of each query, then tie-break by right index
     private static int sortWithBlockSize(Query q1, Query q2, int blockSize) {
-        int b1 = q1.l / blockSize;
-        int b2 = q2.l / blockSize;
+        int b1 = q1.l / blockSize; // block of left index for q1
+        int b2 = q2.l / blockSize; // block of left index for q2
         if (b1 != b2) return b1 - b2;
-        return q1.r - q2.r;
+        return q1.r - q2.r; // if blocks equal, sort by right index
     }
 
     private static class Query {
@@ -26,7 +27,7 @@ public class MoAlgorithm {
 
     public static class Mo {
         private int blockSize;
-        private QueryData data;
+        private QueryData data; // data is an object that has init(), add(idx), remove(idx), and answer() functions
 
         public Mo(int blockSize, QueryData data) {
             this.blockSize = blockSize;
@@ -35,6 +36,8 @@ public class MoAlgorithm {
 
         public int[][] query(int[][] queries) {
             int n = queries.length;
+
+            // create objects bundling each query [l,r] with its original index
             List<Query> list = new ArrayList<>(n);
             for (int i = 0; i < n; i++) {
                 list.add(new Query(queries[i][0], queries[i][1], i));
@@ -46,23 +49,31 @@ public class MoAlgorithm {
             int l = 0, r = -1;
 
             for (Query q : list) {
-                while (q.l < l) {
+                // while the current query's left index is less than the current query range, decrement the 
+                // query range left index and add to the range data structure
+                while (q.l < l) { 
                     l--;
                     data.add(l);
                 }
-                while (r < q.r) {
+                // while the current query's right index is greater than the current query range, increment 
+                // the query range right index and add to the range data structure
+                while (r < q.r) { 
                     r++;
                     data.add(r);
                 }
-                while (l < q.l) {
+                // while the current query's left index is greater than the current query range, increment 
+                // the query range left index and remove from the range data structure
+                while (l < q.l) { 
                     data.remove(l);
                     l++;
                 }
-                while (q.r < r) {
+                // while the current query's right index is less than the current query range, decrement the 
+                // query range right index and remove from the range data structure
+                while (q.r < r) { 
                     data.remove(r);
                     r--;
                 }
-                results[q.idx] = data.answer();
+                results[q.idx] = data.answer(); // get the current answer and write it to the index of the query's original position
             }
             return results;
         }
@@ -80,14 +91,18 @@ public class MoAlgorithm {
 
         @Override
         public void init() {
-            frequencies = new HashMap<>();
-            buckets = new ArrayList<>(array.length);
+            frequencies = new HashMap<>(); // maps numbers to current frequencies
+            
+            // array of frequency buckets, index 0 represents frequency 1 (so numbers with "zero" 
+            // frequency are not stored in any buckets)
+            buckets = new ArrayList<>(array.length); 
             for (int i = 0; i < array.length; i++) {
                 buckets.add(new LinkedHashSet<>());
             }
-            modeFreq = 0;
+            modeFreq = 0; // stores the frequency of the current mode
         }
 
+        // convenience functions for handling frequencies being offset by 1 from bucket indices
         private void addToBucket(int freq, int item) {
             if (freq - 1 < 0) return;
             buckets.get(freq - 1).add(item);
@@ -101,12 +116,14 @@ public class MoAlgorithm {
         @Override
         public void add(int idx) {
             int val = array[idx];
-            int oldF = frequencies.getOrDefault(val, 0);
+            int oldF = frequencies.getOrDefault(val, 0); // add to frequencies map if not yet seen
+            
+            // remove from current bucket and insert into next bucket (next 3 lines)
             removeFromBucket(oldF, val);
             int newF = oldF + 1;
             frequencies.put(val, newF);
             addToBucket(newF, val);
-            if (newF > modeFreq) modeFreq = newF;
+            if (newF > modeFreq) modeFreq = newF; // if this is the new mode, increment the mode
         }
 
         @Override
@@ -114,16 +131,20 @@ public class MoAlgorithm {
             int val = array[idx];
             int oldF = frequencies.getOrDefault(val, 0);
             removeFromBucket(oldF, val);
+            
+            // if val's frequency is the mode and its the last in its bucket, decrement the mode
             if (oldF == modeFreq && buckets.get(oldF - 1).isEmpty()) {
                 modeFreq--;
             }
             int newF = oldF - 1;
             frequencies.put(val, newF);
-            addToBucket(newF, val);
+            addToBucket(newF, val); // insert val into the previous bucket
         }
 
         @Override
         public int[] answer() {
+            // this loop only runs once because it returns on the first iteration, this is just an 
+            // easy way to grab an arbitrary element of a set
             Iterator<Integer> it = buckets.get(modeFreq - 1).iterator();
             if (it.hasNext())
                 return new int[]{ it.next(), modeFreq };
