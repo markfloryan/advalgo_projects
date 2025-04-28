@@ -114,4 +114,4 @@ mo = Mo(block_size, data)
 results = mo.query(indexed_queries)
 
 for i in range(len(results)):
-    print(queries[i], ":", results[i])
+    print(results[i])
