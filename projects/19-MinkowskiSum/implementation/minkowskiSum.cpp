@@ -37,7 +37,7 @@ void reorder_polygon(vector<pt> & P){
 // assumes that P and Q (the two polygons) are ordered counter-clockwise
 vector<pt> minkowski(vector<pt> P, vector<pt> Q){
     // the first vertex must be the lowest for both polygons
-    // this also sorts the polygons by polar angle
+    // this results in the polygons being sorted by polar angle
     reorder_polygon(P);
     reorder_polygon(Q);
     // allow cyclic indexing by adding the first two points to the end of the vector 
@@ -55,10 +55,10 @@ vector<pt> minkowski(vector<pt> P, vector<pt> Q){
         // compare the polar angles of the two edges
         auto cross = (P[i + 1] - P[i]).cross(Q[j + 1] - Q[j]);
         // increment both points of the polar angles are equal (cross product == 0)
-        // if the cross product is > 0, the polar angle of P is less
+        // if the cross product is > 0, the polar angle of P is less -> increment P
         if(cross >= 0 && i < P.size() - 2)
             ++i;
-        // otherwise the polar angle of Q is less
+        // otherwise the polar angle of Q is less -> increment Q
         if(cross <= 0 && j < Q.size() - 2)
             ++j;
 
@@ -69,7 +69,7 @@ vector<pt> minkowski(vector<pt> P, vector<pt> Q){
 // main function to calculate minkowski sum
 // expect input of 2 polygons, where a polygon is defined by 
 // the first line containing a single integer x indicating the number of points in the polygon
-// and the next x lines containing 2 space seperated longs, where the first is the x value and the second is the y value
+// and the next x lines containing 2 space seperated integers, where the first is the x value and the second is the y value
 int main() {
     int aSize, bSize;
     long long x, y;
