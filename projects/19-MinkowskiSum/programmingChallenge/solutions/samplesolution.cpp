@@ -170,18 +170,66 @@ bool pointInPolygon(const Point& point, const vector<Point>& polygon) {
     return true;
 }
 
-vector<Point> minkowskiDifference(const vector<Point>& A, const vector<Point>& B) {
-    //compute the Minkowski difference A - B
-    //traditional Minkowski sum adds the points from B to each point in A
-    //Minkowski difference uses the coordinates of B reflected across the origin
-    vector<Point> diff;
-    for (const auto& a : A) {
-        for (const auto& b : B) {
-            //for all point combinations, add coordinates together
-            diff.emplace_back(a.x - b.x, a.y - b.y);
+// method to reorder the polygon with the lowest y-coord first
+void reorderPolygon(vector<Point>& P) {
+    size_t pos = 0;
+    //iterate through the points, storing the position of the lowest y coord point (taking the smaller x point if equal)
+    for (size_t i = 1; i < P.size(); ++i) {
+        if ((P[i].y < P[pos].y) || (fabs(P[i].y - P[pos].y) < EPS && P[i].x < P[pos].x)) {
+            pos = i;
         }
     }
-    return convexHull(diff);
+    //rotate the vector until the position of the lowest y coord point is at the 0th index
+    rotate(P.begin(), P.begin() + pos, P.end());
+}
+
+// calculate the minkowski difference of two polygons
+// assumes that P and Q (the two polygons) are ordered counter-clockwise
+vector<Point> minkowskiDifference(vector<Point> P, vector<Point> Q) {
+    // Reflect Q across the origin
+    for (auto& q : Q) {
+        q.x = -q.x;
+        q.y = -q.y;
+    }
+
+    // the first vertex must be the lowest for both polygons
+    // this results in the polygons being sorted by polar angle
+    reorderPolygon(P);
+    reorderPolygon(Q);
+
+    vector<Point> P_ext = P;
+    P_ext.push_back(P[0]);
+    P_ext.push_back(P[1]);
+    
+    vector<Point> Q_ext = Q;
+    Q_ext.push_back(Q[0]);
+    Q_ext.push_back(Q[1]);
+
+    vector<Point> result;
+    size_t i = 0, j = 0;
+    //loop until we iterate through all the points of both polygons
+    while (i < P_ext.size() - 2 || j < Q_ext.size() - 2) {
+        //add the sum of the two points we are at
+        result.emplace_back(P_ext[i].x + Q_ext[j].x, P_ext[i].y + Q_ext[j].y);
+        
+        Point a = P_ext[i];
+        Point b = P_ext[i+1];
+        Point c = Q_ext[j];
+        Point d = Q_ext[j+1];
+        // compare the polar angles of the two edges
+        double cross_val = (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x);
+        //increment both points of the polar angles are equal (cross product == 0)
+        // if the cross product is > 0, the polar angle of P is less -> increment P
+        if (cross_val >= 0 && i < P_ext.size() - 2) {
+            i++;
+        }
+        //otherwise the polar angle of Q is less -> increment Q
+        if (cross_val <= 0 && j < Q_ext.size() - 2) {
+            j++;
+        }
+    }
+
+    return result;
 }
 
 int main() {

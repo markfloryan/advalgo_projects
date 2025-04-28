@@ -72,18 +72,51 @@ def convex_hull(points):
     
     return hull
 
-def minkowski_difference(A, B):
-    #compute the Minkowski difference A - B
-    #traditional Minkowski sum adds the points from B to each point in A
-    #Minkowski difference uses the coordinates of B reflected across the origin
-    diff = []
-    for a in A:
-        for b in B:
-            #for all point combinations, add coordinates together
-            diff.append((a[0]-b[0], a[1]-b[1]))
-    return convex_hull(diff)
+# method to reorder the polygon with the lowest y-coord first
+def reorder_polygon(P):
+    pos = 0
+    # iterate through the points, storing the position of the lowest y coord point (taking the smaller x point if equal)
+    for i in range(1, len(P)):
+        if (P[i][1] < P[pos][1]) or (P[i][1] == P[pos][1] and P[i][0] < P[pos][0]):
+            pos = i
+    # rotate the vector until the position of the lowest y coord point is at the 0th index
+    P[:] = P[pos:] + P[:pos]
+
+# calculate the minkowski difference of two polygons
+# assumes that P and Q (the two polygons) are ordered counter-clockwise
+def minkowski_difference(P, Q):
+    # Reflect Q across the origin
+    Q_reflected = [(-q[0], -q[1]) for q in Q]
+
+    # the first vertex must be the lowest for both polygons
+    # this results in the polygons being sorted by polar angle
+    reorder_polygon(P)
+    reorder_polygon(Q_reflected)
+
+    P_ext = P + [P[0], P[1]]
+    Q_ext = Q_reflected + [Q_reflected[0], Q_reflected[1]]
+
+    result = []
+    i = j = 0
+    # loop until we iterate through all the points of both polygons
+    while i < len(P_ext) - 2 or j < len(Q_ext) - 2:
+        # add the sum of the two points we are at
+        result.append((P_ext[i][0] + Q_ext[j][0], P_ext[i][1] + Q_ext[j][1]))
+        # compare the polar angles of the two edges
+        cross_val = (P_ext[i + 1][0] - P_ext[i][0]) * (Q_ext[j + 1][1] - Q_ext[j][1]) - \
+                    (P_ext[i + 1][1] - P_ext[i][1]) * (Q_ext[j + 1][0] - Q_ext[j][0])
+        # increment both points of the polar angles are equal (cross product == 0)
+        # if the cross product is > 0, the polar angle of P is less -> increment P
+        if cross_val >= 0 and i < len(P_ext) - 2:
+            i += 1
+        # otherwise the polar angle of Q is less -> increment Q
+        if cross_val <= 0 and j < len(Q_ext) - 2:
+            j += 1
+
+    return result
 
 def point_on_segment(p, a, b):
+    '''Checks if point p is on segment ab'''
     #check if point p is colinear
     cross_val = cross(a, b, p)
     if abs(cross_val) > EPS:
@@ -97,6 +130,7 @@ def point_on_segment(p, a, b):
             p[1] >= min_y - EPS and p[1] <= max_y + EPS)
 
 def point_in_polygon(point, polygon):
+    '''Checks if point is inside polygon'''
     #check if a point is contained in a polygon using turns method
     n = len(polygon)
     #going counter clockwise, if each point makes a left turn with previous points, convex.

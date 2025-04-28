@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class samplesolution {
     //used for floating point precision
@@ -172,19 +173,74 @@ public class samplesolution {
         }
         return true;
     }
-    
-    static List<Point> minkowskiDifference(List<Point> A, List<Point> B) {
-        //compute the Minkowski difference A - B
-        //traditional Minkowski sum adds the points from B to each point in A
-        //Minkowski difference uses the coordinates of B reflected across the origin
-        List<Point> diff = new ArrayList<>();
-        for (Point a : A) {
-            for (Point b : B) {
-                //for all point combinations, add coordinates together
-                diff.add(new Point(a.x - b.x, a.y - b.y));
+    // method to reorder the polygon with the lowest y-coord first
+    static void reorderPolygon(List<Point> polygon) {
+        int pos = 0;
+        //iterate through the points, storing the position of the lowest y coord point (taking the smaller x point if equal)
+        for (int i = 1; i < polygon.size(); i++) {
+            Point current = polygon.get(i);
+            Point minPoint = polygon.get(pos);
+            if (current.y < minPoint.y || 
+                (Math.abs(current.y - minPoint.y) < EPS && current.x < minPoint.x)) {
+                pos = i;
             }
         }
-        return convexHull(diff);
+        //rotate the vector until the position of the lowest y coord point is at the 0th index
+        Collections.rotate(polygon, -pos);
+    }
+    
+    // calculate the minkowski difference of two polygons
+    // assumes that P and Q (the two polygons) are ordered counter-clockwise
+    static List<Point> minkowskiDifference(List<Point> P, List<Point> Q) {
+        // Reflect Q across the origin
+        List<Point> QReflected = Q.stream()
+                                 .map(q -> new Point(-q.x, -q.y))
+                                 .collect(Collectors.toList());
+        
+        List<Point> Pcopy = new ArrayList<>(P);
+        List<Point> Qcopy = new ArrayList<>(QReflected);
+
+        // the first vertex must be the lowest for both polygons
+        // this results in the polygons being sorted by polar angle        
+        reorderPolygon(Pcopy);
+        reorderPolygon(Qcopy);
+        
+        List<Point> Pext = new ArrayList<>(Pcopy);
+        Pext.add(Pcopy.get(0));
+        Pext.add(Pcopy.get(1));
+        
+        List<Point> Qext = new ArrayList<>(Qcopy);
+        Qext.add(Qcopy.get(0));
+        Qext.add(Qcopy.get(1));
+        
+        List<Point> result = new ArrayList<>();
+        int i = 0, j = 0;
+        //loop until we iterate through all the points of both polygons
+        while (i < Pext.size() - 2 || j < Qext.size() - 2) {
+            //add the sum of the two points we are at
+            result.add(new Point(
+                Pext.get(i).x + Qext.get(j).x,
+                Pext.get(i).y + Qext.get(j).y
+            ));
+            
+            Point a = Pext.get(i);
+            Point b = Pext.get(i+1);
+            Point c = Qext.get(j);
+            Point d = Qext.get(j+1);
+            // compare the polar angles of the two edges
+            double crossVal = (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x);
+            //increment both points of the polar angles are equal (cross product == 0)
+            // if the cross product is > 0, the polar angle of P is less -> increment P
+            if (crossVal >= 0 && i < Pext.size() - 2) {
+                i++;
+            }
+            //otherwise the polar angle of Q is less -> increment Q
+            if (crossVal <= 0 && j < Qext.size() - 2) {
+                j++;
+            }
+        }
+        
+        return result;
     }
     
     public static void main(String[] args) {
