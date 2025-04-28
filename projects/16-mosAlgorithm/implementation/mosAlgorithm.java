@@ -143,8 +143,7 @@ public class MoAlgorithm {
 
         @Override
         public int[] answer() {
-            // this loop only runs once because it returns on the first iteration, this is just an 
-            // easy way to grab an arbitrary element of a set
+            // get an arbitrary element of buckets[modeFreq]
             Iterator<Integer> it = buckets.get(modeFreq - 1).iterator();
             if (it.hasNext())
                 return new int[]{ it.next(), modeFreq };
