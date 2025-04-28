@@ -26,8 +26,6 @@ def generateQueries(amount, minimum, maximum):
         results.append((l, r))
     return results
 
-
-
 U = 5
 
 if (1< len(sys.argv)):
