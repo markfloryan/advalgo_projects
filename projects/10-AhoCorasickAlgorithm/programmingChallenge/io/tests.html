@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title># Test Case Explanations</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../../../markdown.css" />
+</head>
+<body>
+<h1 id="test-case-explanations">Test Case Explanations</h1>
+<h3 id="basic-aho-corasick-algorithm">Basic Aho-Corasick Algorithm</h3>
+<p>These tests measure whether the basic Aho-Corasick algorithm without
+dynamic additions is implemented directly. Each test is designed to test
+one additional constraint / edge case, allowing for easier
+debugging.</p>
+<ol type="1">
+<li></li>
+</ol>
+<ul>
+<li>Books contain at most one keyword</li>
+<li>Keywords are complete words</li>
+</ul>
+<ol start="2" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Books may contain multiple keywords</li>
+<li>Keywords are complete words</li>
+<li>Keywords have suffix overlap</li>
+</ul>
+<ol start="3" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Books may contain multiple keywords</li>
+<li>Keywords may be sub-words</li>
+<li>Keywords have suffix overlap</li>
+</ul>
+<ol start="4" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Books may contain multiple keywords</li>
+<li>Keywords may be sub-words</li>
+<li>Keywords have suffix overlap</li>
+<li>Keywords may be substrings of other keywords</li>
+</ul>
+<ol start="5" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Books may contain multiple keywords</li>
+<li>Keywords may be sub-words</li>
+<li>Keywords have suffix overlap</li>
+<li>Keywords may be substrings of other keywords</li>
+<li>Multiple keywords can match simultaneously</li>
+</ul>
+<ol start="6" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Books may contain multiple keywords</li>
+<li>Keywords may be sub-words</li>
+<li>Must handle case insensitivity</li>
+<li>Keywords have suffix overlap</li>
+<li>Keywords may be substrings of other keywords</li>
+<li>Multiple keywords can match simultaneously</li>
+</ul>
+<h3 id="dynamic-additions">Dynamic Additions</h3>
+<p>The following test cases test support for dynamic additions to the
+dictionary set. These test cases must meet all the requirements of the
+Basic Aho-Corasick test cases listed above.</p>
+<ol start="7" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Additions will not affect other suffix links</li>
+</ul>
+<ol start="8" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Additions may affect other suffix links</li>
+</ul>
+<ol start="9" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Additions may affect other suffix links</li>
+<li>Additions may affect suffix links that have already been
+updated</li>
+</ul>
+<ol start="10" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Additions may affect other suffix links</li>
+<li>Additions may affect suffix links that have already been
+updated</li>
+<li>Avoids double-counting duplicate keywords</li>
+</ul>
+<ol start="11" type="1">
+<li></li>
+</ol>
+<ul>
+<li>Tests support for the maximum keyword and book size, plus all
+available special characters</li>
+</ul>
+<h3 id="speed-cases">Speed Cases</h3>
+<p>The following cases are designed test for time complexity issues.
+While the other test cases may enforce time limits, these cases validate
+the algorithm’s performance under specific load types. Unless otherwise
+stated, the test cases uses the following default values:</p>
+<ul>
+<li>B (number of books): 1,000</li>
+<li>K (number of keywords): 50</li>
+<li>A (number of insertions): 10</li>
+<li>S (number of searches): 5</li>
+</ul>
+<ol start="12" type="1">
+<li></li>
+<li>B = 20,000</li>
+<li>K = 1,000</li>
+<li>A = 300; S = 100</li>
+<li>A = 750; S = 250</li>
+<li>B = 20,000; K = 1,000</li>
+<li>B = 20,000; A = 300; S = 100</li>
+<li>B = 20,000; K = 1,000; A = 300; S = 100</li>
+<li>B = 20,000; K = 1,000; A = 750; S = 250</li>
+</ol>
+</body>
+</html>
