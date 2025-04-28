@@ -50,7 +50,7 @@ class ModeData:
         self.buckets = [None for i in range(len(self.array))] # array of frequency buckets, index 0 represents frequency 1 (so numbers with "zero" frequency are not stored in any buckets)
         self.modeFreq = 0 # stores the frequency of the current mode
 
-    # convenience functions for handling frequencies being offset by 1 from bucket indicies
+    # convenience functions for handling frequencies being offset by 1 from bucket indices
     def addToBucket(self, freq, item): 
         if not self.buckets[freq - 1]:
             self.buckets[freq - 1] = set()
