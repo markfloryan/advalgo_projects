@@ -13,7 +13,7 @@ Go [back to home page](../../index.html)
 
 - Implementations:
 	- [C++](./implementations/segTreeRangeUpdates.cpp)
-	- [Java](./implementations/segTreeRangeUpdates.java)
+	- [Java](./implementations/SegTreeRangeUpdates.java)
 	- [Python](./implementations/segTreeRangeUpdates.py)
 	- io
 		- [test input 1](./implementations/io/sample.in.1)
