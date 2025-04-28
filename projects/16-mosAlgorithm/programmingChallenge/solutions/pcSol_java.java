@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class PcSolJava {
     // simple pair to hold timestamp + username
     static class Message {
         int timestamp;
