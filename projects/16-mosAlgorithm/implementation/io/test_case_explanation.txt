@@ -8,3 +8,6 @@ Next line is Q, how many queries
 the next Q lines each contain a query formatted: "l r", where l and r are
 left and right indices of the query, respectively.
 Assume valid input. l <= r. l and r are within 0 and N, exclusive
+
+
+Output: Q lines, and on each line the answer to each query answered in the original order given in input
