@@ -1,5 +1,5 @@
+
 Project 13 - Hopcroft Algorithm
-===============================
 
 Go [back to home page](../../index.html)
 
@@ -22,6 +22,7 @@ Go [back to home page](../../index.html)
 		- [test output 2](./implementation/io/sample.out.2)
         - [test input 3](./implementation/io/sample.in.3)
 		- [test output 3](./implementation/io/sample.out.3)
+
 
 <a name="overview"></a>Slides
 ---------------------------------------
@@ -80,3 +81,4 @@ Go [back to home page](../../index.html)
 		- [Case 19 output](./programmingChallenge/io/singleton.out)
         - [Case 20 input](./programmingChallenge/io/unreachable.in)
 		- [Case 20 output](./programmingChallenge/io/unreachable.out)
+
