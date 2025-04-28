@@ -113,7 +113,7 @@ def minkowski_difference(P, Q):
         if cross_val <= 0 and j < len(Q_ext) - 2:
             j += 1
 
-    return result
+    return convex_hull(result)
 
 def point_on_segment(p, a, b):
     '''Checks if point p is on segment ab'''

@@ -240,7 +240,7 @@ public class samplesolution {
             }
         }
         
-        return result;
+        return convexHull(result);
     }
     
     public static void main(String[] args) {

@@ -229,7 +229,7 @@ vector<Point> minkowskiDifference(vector<Point> P, vector<Point> Q) {
         }
     }
 
-    return result;
+    return convexHull(result);
 }
 
 int main() {
