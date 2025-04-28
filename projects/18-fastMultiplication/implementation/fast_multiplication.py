@@ -1,7 +1,6 @@
 # Implementation of Toom-3 algorithm for fast multiplication
 
 from math import ceil, log
-import sys
 
 def calculateBase(a: int, b: int) -> int:
     # The base used in multiplication is a power of some number called radix
@@ -97,9 +96,9 @@ def multiply(a: int, b: int) -> int:
     return combine(products, base)
 
 if __name__ == "__main__":
-    # Get operands from command line arguments
-    operand_a: int = int(sys.argv[1])
-    operand_b: int = int(sys.argv[2])
+    # Get operands from standard input
+    operand_a: int = int(input())
+    operand_b: int = int(input())
     # Multiply
     result: int = multiply(operand_a, operand_b)
     # Print the result

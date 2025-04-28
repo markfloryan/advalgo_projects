@@ -1,5 +1,7 @@
 // Implementation of Toom-3 algorithm for fast multiplication
 
+import java.util.Scanner;
+
 public class FastMultiplication {
     private static int calculateBase(long a, long b) {
         // The base used in multiplication is a power of some number called radix
@@ -102,9 +104,11 @@ public class FastMultiplication {
     }
 
     public static void main(String[] args) {
-        // Get operands from command line arguments
-        long operandA = Long.parseLong(args[0]);
-        long operandB = Long.parseLong(args[1]);
+        // Get operands from standard input
+        Scanner scanner = new Scanner(System.in);
+        long operandA = Long.parseLong(scanner.nextLine());
+        long operandB = Long.parseLong(scanner.nextLine());
+        scanner.close();
         // Multiply
         long result = multiply(operandA, operandB);
         // Print the result

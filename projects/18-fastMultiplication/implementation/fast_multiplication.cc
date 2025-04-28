@@ -106,9 +106,11 @@ ll multiply(ll a, ll b) {
 }
 
 int main(int argc, char** argv) {
-    // Get operands from command line arguments
-    ll operandA = stoll(argv[1]);
-    ll operandB = stoll(argv[2]);
+    // Get operands from standard input
+    ll operandA;
+    ll operandB;
+    cin >> operandA;
+    cin >> operandB;
     // Multiply
     ll result = multiply(operandA, operandB);
     // Print the result
