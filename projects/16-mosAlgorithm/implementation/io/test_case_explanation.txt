@@ -1,0 +1,10 @@
+Format:
+First line is N, length of the array
+
+the next N lines contain an element of the array to be processed and put inside an array in the order given
+
+Next line is Q, how many queries
+
+the next Q lines each contain a query formatted: "l r", where l and r are
+left and right indices of the query, respectively.
+Assume valid input. l <= r. l and r are within 0 and N, exclusive
