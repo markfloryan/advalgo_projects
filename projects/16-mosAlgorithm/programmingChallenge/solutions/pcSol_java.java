@@ -192,13 +192,10 @@ public class Main {
         Mo mo = new Mo(blockSize, dataObj);
         int[] answers = mo.query(indexed);
 
-        // print results in the format “(l, r) : answer”
+        // print results
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < Q; i++) {
-            sb.append("(")
-              .append(rawL[i]).append(", ")
-              .append(rawR[i]).append(") : ")
-              .append(answers[i])
+            sb.append(answers[i])
               .append("\n");
         }
         System.out.print(sb);
