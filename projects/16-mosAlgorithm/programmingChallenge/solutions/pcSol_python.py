@@ -2,9 +2,6 @@ import functools
 from math import floor, sqrt
 import bisect
 
-
-
-
 def sort_with_block_size(r1, r2, block_size):
     if r1 is None or r2 is None:
         return 0
