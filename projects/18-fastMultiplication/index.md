@@ -1,4 +1,4 @@
-Project 02 - TimSort
+Project 18 - Fast Multiplication
 ===============================
 
 Go [back to home page](../../index.html)
@@ -99,4 +99,3 @@ Go [back to home page](../../index.html)
 		- Case 20: runtime: 300,000 random ships and 10 queries
         - [Case 20 input](./programmingChallenge/io/test.in.20)
 		- [Case 20 output](./programmingChallenge/io/test.out.20)
-	
