@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title># Explanation Of Test Cases</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../../../markdown.css" />
+</head>
+<body>
+<h1 id="explanation-of-test-cases">Explanation Of Test Cases</h1>
+<p>These test cases are designed to test various different input types,
+sizes, and potential edge cases. An explanation of each test case is as
+follows:</p>
+<p>Cases 1-6 are handcrafted, and cases 7-20 are computer generated with
+varying parameters.</p>
+<p>## Handcrafted Tests - 1: small nontrivial test case meant as a
+sample - 2: tests multiple customers, negative coin labels, and inputs
+which require output labels with absolute value greater than 10000 - 3:
+tests lots of input labels that are close together with multiple
+customers - 4: tests a large value of k meant to overflow if you read it
+as an int - 5: tests for absence of weird behavior in the trivial case
+(k=1, n=1, only one coin) - 6: tests both a large value of k and input
+labels far away from each other</p>
+<p>## Computer Generated Tests</p>
+<p>These tests are randomly generated, but with different values of k
+(the number to multiply the values of the piles by), n (the number of
+customers), and the distribution of each customer’s coins. The
+generation parameters are as follows:</p>
+<ul>
+<li>7: k ~ 10^500, n = 1, piles ~65% dense in [-9000, -8000] U [8000,
+9000]</li>
+<li>8: k ~ 10^500, n = 2, piles ~3% dense in [-1000, 1000]</li>
+<li>9: k ~ 10^750, n = 1, piles ~10% dense in [-100, 100]</li>
+<li>10: k ~ 10^900, n = 10, piles ~70% dense in [-1e4, 1e4]</li>
+<li>11: k = (1250 nines), n = 9, piles ~50% dense in [-1e4, 1e4]</li>
+<li>12: k ~ 10^1753, n = 10, piles ~50% dense in [-1e4, 1e4]</li>
+<li>13: k ~ 10^2500, n = 10, piles ~50% dense in [-1e4, 1e4]</li>
+<li>14: k ~ 10^3000, n = 10, piles ~98% dense in [-1e4, 1e4]</li>
+<li>15: k ~ 10^3250, n = 10, piles ~50% dense in [3e3, 8e3]</li>
+<li>16: k ~ 10^3500, n = 10, piles ~60% dense in [-3e3, -1e3]</li>
+<li>17: k ~ 10^3500, n = 10, piles ~95% dense in [-1e3, 1e3]</li>
+<li>18: k ~ 10^3988, n = 10, exactly 20 numbers in [-1e4, 1e4]</li>
+<li>19: k = (3989 sevens with a few mutations), n = 10, piles ~45% dense
+in [-5e3, 1e4]</li>
+<li>20: k ~ 10^4000, n = 10, piles ~60% dense in [-1e4, 1e4]</li>
+</ul>
+</body>
+</html>

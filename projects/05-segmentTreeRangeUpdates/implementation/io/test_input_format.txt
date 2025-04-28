@@ -1,0 +1,34 @@
+The format for the test case input is as follows:
+
+LINE 1: contans an integer V ranging from 1-3 specifying the seg-tree variant this case tests, as follows:
+
+1 -> tests the Addition + Get segtree
+2 -> tests the Assign + Get segtree
+3 -> tests the Addition + Max segtree
+
+
+
+LINE 2: contains two integers, N and Q, specifying the size of the input array and the number of queries, respectively
+
+
+
+LINE 3: contains the N integers, space separated, that are stored in the input array
+
+
+The next Q lines will each contain a query of varying type based off of the value of V (specifying which segtree is being test) as follows:
+
+
+V = 1 and 2:
+Type 1: UPDATE L R X
+Perform an update query with update-value X on range L-R
+
+Type 2: GET P
+Perform a get query at position P. The program should output the result of the query
+
+
+V = 3:
+Type 1: UPDATE L R X
+Perform an update query with update-value X on range L-R
+
+Type 2: MAX L R
+Perform a max query on the range L-R. The program should output the result of the query.
