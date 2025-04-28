@@ -48,6 +48,12 @@ The link above summarizes how to submit your project. Please read those instruct
 - [14 - Voronoi Diagrams](./projects/14-VoronoiDiagrams/index.html)
 - [15 - Gale Shapley](./projects/15-GaleShapley/index.html)
 
+- [16 - Mos Algorithm](./projects/16-mosAlgorithm/index.html)
+- [17 - FFT](./projects/17-fft/index.html)
+- [18 - Fast Multiplication](./projects/18-fastMultiplication/index.html)
+- [19 - Minkowski Sum](./projects/19-MinkowskiSum/index.html)
+- [20 - Eppsteins Algorithm](./projects/20-EppsteinsAlgorithm/index.html)
+
 <a name="projects"></a>Grading Rubric
 ------------------------------------------
 
