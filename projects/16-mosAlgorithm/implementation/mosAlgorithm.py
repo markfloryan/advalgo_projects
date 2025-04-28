@@ -87,12 +87,3 @@ class ModeData:
         # this loop only runs once because it returns on the first iteration, this is just an easy way to grab an arbitrary element of a set
         for val in self.buckets[self.modeFreq - 1]:
             return (val, self.modeFreq)
-
-# qs = [(0, 4), (0, 6), (0, 3), (1, 4), (1, 6), (4, 9), (3, 10)]
-# arr = [8, 3, 4, 5, 3, 2, 3, 1, 3, 2, 8, 10, 11, 3, 2]
-# data = ModeData(arr)
-# mo = Mo(3, data)
-# results = mo.query(qs)
-
-# for i in range(len(qs)):
-#     print(qs[i], results[i])
