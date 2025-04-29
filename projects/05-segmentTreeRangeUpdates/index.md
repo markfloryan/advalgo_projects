@@ -12,9 +12,10 @@ Go [back to home page](../../index.html)
 ---------------------------------------
 
 - Implementations:
-	- [C++](./implementation/segTreeRangeUpdates.cpp)
-	- [Java](./implementation/segTreeRangeUpdates.java)
-	- [Python](./implementation/segTreeRangeUpdates.py)
+
+	- [C++](./implementations/segTreeRangeUpdates.cpp)
+	- [Java](./implementations/SegTreeRangeUpdates.java)
+	- [Python](./implementations/segTreeRangeUpdates.py)
 	- io
 		- [test input 1](./implementation/io/sample.in.1)
 		- [test output 1](./implementation/io/sample.out.1)

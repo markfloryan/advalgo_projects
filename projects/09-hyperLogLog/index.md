@@ -11,16 +11,16 @@ Go [back to home page](../../index.html)
 ---------------------------------------
 
 - Implementations:
-	- [C++](./implementations/hyperLogLog.cpp)
-	- [Java](./implementations/hyperLogLog.java)
-	- [Python](./implementations/hyperLogLog.py)
+	- [C++](./implementation/hyperLogLog.cpp)
+	- [Java](./implementation/hyperLogLog.java)
+	- [Python](./implementation/hyperLogLog.py)
 	- io
-		- [test input 1](./implementations/io/sample.in.1)
-		- [test output 1](./implementations/io/sample.out.1)
-		- [test input 2](./implementations/io/sample.in.2)
-		- [test output 2](./implementations/io/sample.out.2)
-        - [test input 3](./implementations/io/sample.in.3)
-		- [test output 3](./implementations/io/sample.out.3)
+		- [test input 1](./implementation/io/sample.in.1)
+		- [test output 1](./implementation/io/sample.out.1)
+		- [test input 2](./implementation/io/sample.in.2)
+		- [test output 2](./implementation/io/sample.out.2)
+        - [test input 3](./implementation/io/sample.in.3)
+		- [test output 3](./implementation/io/sample.out.3)
 
 <a name="overview"></a>Slides
 ---------------------------------------
@@ -34,9 +34,9 @@ Go [back to home page](../../index.html)
 
 - [Programming Challenge](./programmingChallenge/problemStatement.pdf)
 	- Solutions:
-		- [C++](./programmingChallenge/solutions.pcSol_cpp.cpp)
-		- [Java](./programmingChallenge/solutions.pcSol_java.java)
-		- [Python](./programmingChallenge/solutions.pcSol_python.py)
+		- [C++](./programmingChallenge/solutions/pcSol_cpp.cpp)
+		- [Java](./programmingChallenge/solutions/pcSol_java.java)
+		- [Python](./programmingChallenge/solutions/pcSol_python.py)
 	- Test Cases:
 		- [Case 1 input](./programmingChallenge/io/test.in.1)
 		- [Case 1 output](./programmingChallenge/io/test.out.1)
@@ -80,5 +80,3 @@ Go [back to home page](../../index.html)
         - [Case 20 output](./programmingChallenge/io/test.out.20)
         - [Case 21 input](./programmingChallenge/io/test.in.21)
 		- [Case 21 output](./programmingChallenge/io/test.out.21)
-        - [Case 22 input](./programmingChallenge/io/test.in.22)
-		- [Case 22 output](./programmingChallenge/io/test.out.22)

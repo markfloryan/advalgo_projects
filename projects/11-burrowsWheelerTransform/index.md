@@ -1,4 +1,4 @@
-Project 00 - Coin Change
+Project 11 - Burrows–Wheeler transform
 ===============================
 
 Go [back to home page](../../index.html)
@@ -6,7 +6,7 @@ Go [back to home page](../../index.html)
 <a name="overview"></a>Executive Summary
 ---------------------------------------
 
-- [Executive Summary](./executiveSummary.pdf)
+- [Executive Summary](./Executive_Summary.pdf)
 
 <a name="overview"></a>Implementation
 ---------------------------------------
