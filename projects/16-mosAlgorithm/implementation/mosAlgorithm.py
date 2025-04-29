@@ -1,4 +1,5 @@
 import functools
+import math
 
 def sortWithBlockSize(q1, q2, blockSize):
     q1lb = q1[0] // blockSize # get the block of the left index of query one
@@ -87,3 +88,30 @@ class ModeData:
         # this loop only runs once because it returns on the first iteration, this is just an easy way to grab an arbitrary element of a set
         for val in self.buckets[self.modeFreq - 1]:
             return (val, self.modeFreq)
+
+# this is for reading input in the format:
+# N
+# a1
+# a2
+# ...
+# aN
+# Q
+# q1
+# q2
+# ...
+# qQ
+
+N = int(input())
+arr = []
+for i in range(N):
+    arr.append(int(input()))
+Q = int(input())
+queries = []
+for i in range(Q):
+    l, r = input().split()
+    queries.append((int(l), int(r)))
+
+mo = Mo(int(math.sqrt(len(arr))), ModeData(arr))
+results = mo.query(queries)
+for r in results:
+    print(r[1])
