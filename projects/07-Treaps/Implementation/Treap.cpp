@@ -52,9 +52,9 @@ private:
     // Performs a left rotation to maintain heap property
     //     x                  y
     //    / \                / \
-    //   α   y    =>       x   γ
+    //   c   y    =>       x   a
     //      / \           / \
-    //     β   γ         α   β
+    //     b   a         c   b
     static Node* rotateLeft(Node* x) {
         Node* y = x->right;
         x->right = y->left;
