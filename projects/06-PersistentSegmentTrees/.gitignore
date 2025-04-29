@@ -1,0 +1,11 @@
+Solution.exe
+/.idea
+.vscode
+/Implementations/out
+/Implementations/.idea
+/Implementations/Java/.idea
+*.iml
+/programmingAssignment/Solutions/Java/.idea
+/programmingAssignment/.idea
+/programmingAssignment/Solutions/Python/__pycache__
+/Implementations/Python/__pycache__
