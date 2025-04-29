@@ -6,7 +6,7 @@ Go [back to home page](../../index.html)
 <a name="overview"></a>Executive Summary
 ---------------------------------------
 
-- [Executive Summary](./executiveSummary.pdf)
+- [Executive Summary](./Executive_Summary.pdf)
 
 <a name="overview"></a>Implementation
 ---------------------------------------
