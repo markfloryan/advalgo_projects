@@ -42,6 +42,17 @@ The link above summarizes how to submit your project. Please read those instruct
 - [08 - Bloom Filter](./projects/08-bloomFilter/index.html)
 - [09 - Hyper Log Log](./projects/09-hyperLogLog/index.html)
 - [10 - Aho Corasick Algorithm](./projects/10-AhoCorasickAlgorithm/index.html)
+- [11 - Burrows Wheeler Transform](./projects/11-burrowsWheelerTransform/index.html)
+- [12 - Knuth-Morris-Pratt](./projects/12-KnuthMorrisPratt/index.html)
+- [13 - Hopcroft Algorithm](./projects/13-Hopcroft/index.html)
+- [14 - Voronoi Diagrams](./projects/14-VoronoiDiagrams/index.html)
+- [15 - Gale Shapley](./projects/15-GaleShapley/index.html)
+
+- [16 - Mos Algorithm](./projects/16-mosAlgorithm/index.html)
+- [17 - FFT](./projects/17-fft/index.html)
+- [18 - Fast Multiplication](./projects/18-fastMultiplication/index.html)
+- [19 - Minkowski Sum](./projects/19-MinkowskiSum/index.html)
+- [20 - Eppsteins Algorithm](./projects/20-EppsteinsAlgorithm/index.html)
 
 <a name="projects"></a>Grading Rubric
 ------------------------------------------

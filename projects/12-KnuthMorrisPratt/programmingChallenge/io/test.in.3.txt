@@ -1,0 +1,6 @@
+2
+jade
+emerald
+1
+slime
+dirtdustmudstone rocksandgravelsilt graveldustgravel dirtmudsandgravel

@@ -1,5 +1,4 @@
 Project 09 - HyperLogLog
-===============================
 
 Go [back to home page](../../index.html)
 
@@ -81,5 +80,3 @@ Go [back to home page](../../index.html)
         - [Case 20 output](./programmingChallenge/io/test.out.20)
         - [Case 21 input](./programmingChallenge/io/test.in.21)
 		- [Case 21 output](./programmingChallenge/io/test.out.21)
-
-	

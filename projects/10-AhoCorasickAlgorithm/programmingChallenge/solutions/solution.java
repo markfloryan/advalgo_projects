@@ -11,152 +11,191 @@ import java.util.*;
 
 public class solution {
 
-    // Here is the Trie Node. It represents a state in the Aho-Corasick automaton created.
-    // The Trie Node stores a map of character transitions to child nodes,
-    // a fail link to fall back to when a match fails, 
-    // and a list of output keywords that end at this node
+    // Trie Node Object represents a "trie" or a prefix tree used to store a set of strings we
+    // wish to search for (pattern). The trie will be used to build an automaton that will allow
+    // us to search text efficiently for our list of patterns
     static class TrieNode {
+        // Children represent outgoing edges between nodes in a Trie. They represent 
+        // the structure between all the characters in the patterns
         Map<Character, TrieNode> children = new HashMap<>();
-        TrieNode failLink = null;
-        List<String> outputs = new ArrayList<>();
+
+        // This represents the failure/suffix links, which are the path taken by the automaton 
+        // when they reach a state of failure (AKA we reach a character not in the pattern). 
+        // Rather than reverting back to the root node, the suffix link will lead 
+        // us back to the longest proper suffix.
+        TrieNode fail = null;
+
+        // Output/Terminal links are every complete pattern (in the list of keywords) that we have
+        // currently reached at this node
+        List<String> output = new ArrayList<>();
     }
 
-    // Here is the main class, AhoCorasick, which implements the Aho-Corasick automaton
-    // The class supports inserting keywords, building failure links for fast backtracking during a search,
-    // and searching a string for keyword occurrences
     static class AhoCorasick {
-        // Here, we instantiate the root, or start node, of the Trie
+        // Initialize the Trie with an empty root Node
         TrieNode root = new TrieNode();
 
-        // This function adds a keyword to the Trie, building the initial structure of the Trie
-        // The keyword is inserted character by character, creating new nodes when necessary
-        public void addKeyword(String keyword) {
+        // Insert a single "pattern" word into the trie.
+        // We will reuse existing edges so common prefixes 
+        // such as "EATing" and "EATery" are shared
+        void add(String pattern) {
             TrieNode node = root;
-            // We use lowercase to make the search case-insensitive.
-            for (char ch : keyword.toLowerCase().toCharArray()) {
-                // This will add a children node to the node if it is not already present
+            for (char ch : pattern.toCharArray()) {
                 node = node.children.computeIfAbsent(ch, k -> new TrieNode());
-            }
-            // This will add the full keyword to the output list at the terminal node
-            node.outputs.add(keyword.toLowerCase());
+                }
+            // Mark the end of the pattern as a desired output
+            node.output.add(pattern);
         }
 
-        // Here, we build the failure links for fallback transitions. These links allow the automaton
-        // to recover from mismatches efficiently by connecting each node to the longest suffix that is
-        // also a prefix in the Trie
-        public void buildFailLinks() {
-            // Here, we will build the failure function computed in breadth-first order using a queue
-            Queue<TrieNode> queue = new LinkedList<>();
+        // Once all of the patterns are inserted, we must build the automaton using BFS
+        // traversal to construct all of the failure links at every state, and 
+        // merge the output lists along these links
+        void build() {
+            // Given a Trie, we assume the Root Node has depth 0 and its final layer has depth D
 
-            // Initialize the children directly under the root (start state), or level 1 children
-            // Their failure link should always point back to the root
+            // BASE CASE: DEPTH = 1 (Children of Root)
+            // All root children fail back to root
+            Queue<TrieNode> q = new LinkedList<>();
             for (TrieNode child : root.children.values()) {
-                child.failLink = root;
-                queue.add(child);
+                child.fail = root;
+                q.add(child);
             }
 
-            // We will use a BFS traversal to construct failure links for the rest of the Trie
-            while (!queue.isEmpty()) {
-                TrieNode current = queue.poll();
-                for (Map.Entry<Character, TrieNode> entry : current.children.entrySet()) {
+            // We use BFS to guarantee that the failure (cur.fail) of any given node (cur) 
+            // will be known only after the failure of its parent is known so we can 
+            // use it to calculate the fail link of each of cur's children
+            while (!q.isEmpty()) {
+                TrieNode cur = q.poll();
+                for (Map.Entry<Character, TrieNode> entry : cur.children.entrySet()) {
                     char ch = entry.getKey();
-                    TrieNode child = entry.getValue();
+                    TrieNode nxt = entry.getValue();
+                    TrieNode f = cur.fail;
 
-                    // Here, we follow the failure link chain until we find a node with the same character
-                    // transition or reach the root
-                    TrieNode fail = current.failLink;
-                    while (fail != null && !fail.children.containsKey(ch)) {
-                        fail = fail.failLink;
+                    // If we fell back to failure state f, could we still consume ch?
+                    // If not, keep falling back along f.fail until we can, 
+                    // or until we hit the root.
+                    while (f != null && !f.children.containsKey(ch)) {
+                        f = f.fail;
+                    }
+                    
+                    if (f != null && f.children.containsKey(ch)) {
+                        nxt.fail = f.children.get(ch);
+                    } else {
+                        nxt.fail = root;
                     }
 
-                    // We set the child's failure link to the next closest match or root
-                    child.failLink = (fail != null) ? fail.children.get(ch) : root;
+                    // Any pattern that ends at nxt.fail is also a suffix of the path 
+                    // that ends at nxt, so we append those patterns to nxt.output
+                    nxt.output.addAll(nxt.fail.output);
 
-                    // Then we append the outputs from the fail link node to inherit matches
-                    child.outputs.addAll(child.failLink.outputs);
-
-                    // Add the child to the BFS queue to continue processing the Trie
-                    queue.add(child);
+                    // Finally we push the child onto the queue so its own descendants will get their fail links 
+                    // computed later—only after we just ensured nxt.fail is correct.
+                    q.add(nxt);
                 }
             }
         }
 
-        // This function performs the keyword search on a given input string
-        // It returns the total number of keyword matches found
-        public int search(String text) {
+        // This function searches a str "text" to return the total number of pattern occurrences
+        // where overlaps are allowed
+        int findCount(String text) {
+            // "node" represents the automaton once it has been built. It starts out as the
+            // root node to represent the start state - no characters have been consumed
+            // matches is the number of matches
             TrieNode node = root;
-            int count = 0;
+            int matches = 0;
 
-            // We convert to lowercase to ensure a case-insensitive search
-            text = text.toLowerCase();
-
+            // For each character ch in the text string
             for (char ch : text.toCharArray()) {
-                // If the current character is not a valid transition, follow the
-                // fail links until a match is found or we return to the root of the automaton
-                while (node != root && !node.children.containsKey(ch)) {
-                    node = node.failLink;
+                // If the current state has no edge labeled for  
+                // ch, then we jump to its fail link state - the longest proper suffix
+                // for as long as we can
+                while (node != null && !node.children.containsKey(ch)) {
+                    node = node.fail;
                 }
 
-                // Take the matching transition or return to the root
-                node = node.children.getOrDefault(ch, root);
+                // If we hit a character that can’t follow any suffix, then 
+                // reset to the root node and move on
+                if (node == null) {
+                    node = root;
+                    continue;
+                }
 
-                // Add the number of matching keywords ending at this node
-                count += node.outputs.size();
+                // Else we consume ch. We now have matched the prefix by one character 
+                // so we step on to the child's (ch's) state
+                node = node.children.get(ch);
+                matches += node.output.size();
             }
-
-            return count;
+            return matches;
         }
     }
 
-    // Here is our main function, which reads the input and processes actions as stated in the instructions
-    // We initialize the book database, add keywords dynamically, and perform search queries on books,
-    // as specified in the instructions
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        // Here, we read the number of books B and load the titles into a list
-        int B = Integer.parseInt(sc.nextLine());
+        // The first line of input is the number of books.
+        // The next B lines will each contain the title for one book in the catalogue
+        int B = Integer.parseInt(scanner.nextLine());
         List<String> books = new ArrayList<>();
         for (int i = 0; i < B; i++) {
-            books.add(sc.nextLine());
+            books.add(scanner.nextLine().trim().toLowerCase());
         }
 
-        // Here, we read the number of initial search keywords and insert them into the automaton
-        int K = Integer.parseInt(sc.nextLine());
-        AhoCorasick ac = new AhoCorasick();
+        // The next line will be the number of initial search keywords
+        // The next K lines will each contain one search keyword
+        int K = Integer.parseInt(scanner.nextLine());
+        Set<String> keywords = new HashSet<>();
         for (int i = 0; i < K; i++) {
-            ac.addKeyword(sc.nextLine());
+            keywords.add(scanner.nextLine().trim().toLowerCase());
         }
-        // We build failure links after all intiial keywords are inserted
-        ac.buildFailLinks();
 
-        // Here, we process N actions, which may be adding a new keyword dynamically using A,
-        // or searching all books for keyword matches using S
-        int N = Integer.parseInt(sc.nextLine());
+        // Following line will be a number N that represents the number of ‘actions’ N
+        int N = Integer.parseInt(scanner.nextLine());
+
+        // Here we will set up our Aho-Corasick automaton
+        // We will also set the dirty boolean flag to true whenever a keyword changes
+        AhoCorasick ac = null;
+        boolean dirty = true;
+
         for (int i = 0; i < N; i++) {
-            String[] action = sc.nextLine().split(" ", 2);
+            String[] parts = scanner.nextLine().split(" ");
+            String cmd = parts[0];
 
-            if (action[0].equals("A")) {
-                // Here, we add the new keyword and rebuild the fail links to ensure correctness
-                ac.addKeyword(action[1]);
-                // This rebuild is expensive, but necessary
-                ac.buildFailLinks();
-            } else if (action[0].equals("S")) {
-                List<String> result = new ArrayList<>();
+            // A [keyword] should add [keyword] to the dictionary of 
+            // search keywords if it is not already present 
+            if (cmd.equals("A")) {
+                String kw = parts[1].toLowerCase();
+                if (!keywords.contains(kw)) {
+                    keywords.add(kw);
+                    dirty = true;
+                }
+            }
 
-                // For each book, count how many keywords it matches
-                for (int j = 0; j < books.size(); j++) {
-                    int matches = ac.search(books.get(j));
-
-                    // If any matches are found, record the book index and the count
-                    if (matches > 0) {
-                        result.add("(" + j + "," + matches + ")");
+            // S should search the catalogue for all titles that match at least 
+            // one of the search keywords along with the number of matches for each
+            else if (cmd.equals("S")) {
+                // We rebuild the automaton only when something has actually
+                // changed (dirty) or on the very first search.                 
+                if (dirty || ac == null) {
+                    ac = new AhoCorasick();
+                    for (String kw : keywords) {
+                        ac.add(kw);
                     }
+                    ac.build();
+                    dirty = false;
                 }
 
-                // Finally, output results as a space-separated string of tuples
-                System.out.println(String.join(" ", result));
+                // Walk every stored book title, count how many keyword occurrences it has 
+                // (overlaps allowed), and append (index,count) to results when count > 0.
+                List<String> results = new ArrayList<>();
+                for (int idx = 0; idx < books.size(); idx++) {
+                    int count = ac.findCount(books.get(idx));
+                    if (count > 0) {
+                        results.add("(" + idx + "," + count + ")");
+                    }
+                }
+                System.out.println(String.join(" ", results));
             }
         }
+
+        scanner.close();
     }
 }
