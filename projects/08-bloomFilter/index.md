@@ -41,9 +41,9 @@ Go [back to home page](../../index.html)
 
 - [Programming Challenge](./programmingChallenge/problemStatement.pdf)
 	- Solutions:
-		- [C++](./programmingChallenge/solutions.pcSol_cpp.cpp)
-		- [Java](./programmingChallenge/solutions.pcSol_java.java)
-		- [Python](./programmingChallenge/solutions.pcSol_python.py)
+		- [C++](./programmingChallenge/solutions/pcSol_cpp.cpp)
+		- [Java](./programmingChallenge/solutions/pcSol_java.java)
+		- [Python](./programmingChallenge/solutions/pcSol_python.py)
 		- [makefile](./programmingChallenge/solutions/makefile)
 	- Test Cases:
 		- [Case 1 input](./programmingChallenge/io/test.in.1)

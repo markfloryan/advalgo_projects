@@ -1,4 +1,4 @@
-Project 00 - Coin Change
+Project 11 - Burrows–Wheeler transform
 ===============================
 
 Go [back to home page](../../index.html)

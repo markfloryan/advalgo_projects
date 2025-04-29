@@ -13,8 +13,8 @@ Go [back to home page](../../index.html)
 
 - Implementations:
 	- [C++](./implementation/gale_shapley.cpp)
-	- [Java](./implementation/GaleShapley.java.java)
-	- [Python](./implementation/gale_shapley.py.py)
+	- [Java](./implementation/GaleShapley.java)
+	- [Python](./implementation/gale_shapley.py)
 	- io
 		- [test input 1](./implementation/io/sample.in.1)
 		- [test output 1](./implementation/io/sample.out.1)
