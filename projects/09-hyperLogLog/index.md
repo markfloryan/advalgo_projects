@@ -81,7 +81,5 @@ Go [back to home page](../../index.html)
         - [Case 20 output](./programmingChallenge/io/test.out.20)
         - [Case 21 input](./programmingChallenge/io/test.in.21)
 		- [Case 21 output](./programmingChallenge/io/test.out.21)
-        - [Case 22 input](./programmingChallenge/io/test.in.22)
-		- [Case 22 output](./programmingChallenge/io/test.out.22)
 
 	
