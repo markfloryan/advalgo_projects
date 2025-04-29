@@ -20,7 +20,7 @@ Go [back to home page](../../index.html)
 		- [test output 1](./implementation/io/sample.out.1)
 		- [test input 2](./implementation/io/sample.in.2)
 		- [test output 2](./implementation/io/sample.out.2)
-    - [test input 3](./implementation/io/sample.in.3)
+        - [test input 3](./implementation/io/sample.in.3)
 		- [test output 3](./implementation/io/sample.out.3)
 
 <a name="overview"></a>Slides
