@@ -16,9 +16,9 @@ class Treap:
     # Right rotate to fix heap violation
     #       y              x
     #      / \            / \
-    #     x   γ   =>     α   y
+    #     x   a   =>     c   y
     #    / \                / \
-    #   α   β              β   γ
+    #   c   b              b   a
     def _rotate_right(self, y):
         x = y.left
         y.left = x.right
@@ -28,9 +28,9 @@ class Treap:
     # Left rotate to fix heap violation
     #     x                  y
     #    / \                / \
-    #   α   y    =>       x   γ
+    #   c   y    =>       x   a
     #      / \           / \
-    #     β   γ         α   β
+    #     b   a         c   b
     def _rotate_left(self, x):
         y = x.right
         x.right = y.left

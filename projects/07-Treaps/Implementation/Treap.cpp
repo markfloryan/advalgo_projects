@@ -39,9 +39,9 @@ private:
     // Right rotate to fix heap violation
     //      y              x
     //      / \            / \
-    //     x   γ   =>     α   y
+    //     x   a   =>     c   y
     //    / \                / \
-    //   α   β              β   γ
+    //   c   b              b   a
     static Node* rotateRight(Node* y) {
         Node* x = y->left;
         y->left = x->right;
@@ -52,9 +52,9 @@ private:
     // Performs a left rotation to maintain heap property
     //     x                  y
     //    / \                / \
-    //   α   y    =>       x   γ
+    //   c   y    =>       x   a
     //      / \           / \
-    //     β   γ         α   β
+    //     b   a         c   b
     static Node* rotateLeft(Node* x) {
         Node* y = x->right;
         x->right = y->left;

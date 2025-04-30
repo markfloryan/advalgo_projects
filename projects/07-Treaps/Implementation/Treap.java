@@ -25,11 +25,11 @@ public class Treap {
 
 
     // Restores heap order by rotating a node with its left child
-    //       y              x
+    //      y              x
     //      / \            / \
-    //     x   γ   =>     α   y
+    //     x   a   =>     c   y
     //    / \                / \
-    //   α   β              β   γ
+    //   c   b              b   a
     private Node rotateRight(Node y) {
         Node x = y.left;
         y.left = x.right;
@@ -40,9 +40,9 @@ public class Treap {
     // Restores heap order by rotating a node with its right child
     //     x                  y
     //    / \                / \
-    //   α   y    =>       x   γ
+    //   c   y    =>       x   a
     //      / \           / \
-    //     β   γ         α   β
+    //     b   a         c   b
     private Node rotateLeft(Node x) {
         Node y = x.right;
         x.right = y.left;
